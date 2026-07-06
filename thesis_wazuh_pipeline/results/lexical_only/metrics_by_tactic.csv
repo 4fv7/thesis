@@ -1,0 +1,28 @@
+FN,FP,TN,TP,accuracy,balanced_accuracy,f1,fpr,group_field,group_value,method,precision,recall,sample_count,specificity
+0,0,150,0,1.0,0.5,0.0,0.0,tactic,Benign Administration,wazuh_standard,0.0,0.0,150,1.0
+0,13,137,0,0.913333,0.456667,0.0,0.086667,tactic,Benign Administration,lexical_pipeline,0.0,0.0,150,0.913333
+0,13,137,0,0.913333,0.456667,0.0,0.086667,tactic,Benign Administration,hybrid_or,0.0,0.0,150,0.913333
+39,0,0,0,0.0,0.0,0.0,0.0,tactic,Command and Control,wazuh_standard,0.0,0.0,39,0.0
+12,0,0,27,0.692308,0.346154,0.818182,0.0,tactic,Command and Control,lexical_pipeline,1.0,0.692308,39,0.0
+12,0,0,27,0.692308,0.346154,0.818182,0.0,tactic,Command and Control,hybrid_or,1.0,0.692308,39,0.0
+8,0,0,0,0.0,0.0,0.0,0.0,tactic,Credential Access,wazuh_standard,0.0,0.0,8,0.0
+5,0,0,3,0.375,0.1875,0.545455,0.0,tactic,Credential Access,lexical_pipeline,1.0,0.375,8,0.0
+5,0,0,3,0.375,0.1875,0.545455,0.0,tactic,Credential Access,hybrid_or,1.0,0.375,8,0.0
+42,0,0,0,0.0,0.0,0.0,0.0,tactic,Defense Evasion,wazuh_standard,0.0,0.0,42,0.0
+5,0,0,37,0.880952,0.440476,0.936709,0.0,tactic,Defense Evasion,lexical_pipeline,1.0,0.880952,42,0.0
+5,0,0,37,0.880952,0.440476,0.936709,0.0,tactic,Defense Evasion,hybrid_or,1.0,0.880952,42,0.0
+1,0,0,0,0.0,0.0,0.0,0.0,tactic,Discovery,wazuh_standard,0.0,0.0,1,0.0
+1,0,0,0,0.0,0.0,0.0,0.0,tactic,Discovery,lexical_pipeline,0.0,0.0,1,0.0
+1,0,0,0,0.0,0.0,0.0,0.0,tactic,Discovery,hybrid_or,0.0,0.0,1,0.0
+31,0,0,0,0.0,0.0,0.0,0.0,tactic,Execution,wazuh_standard,0.0,0.0,31,0.0
+3,0,0,28,0.903226,0.451613,0.949153,0.0,tactic,Execution,lexical_pipeline,1.0,0.903226,31,0.0
+3,0,0,28,0.903226,0.451613,0.949153,0.0,tactic,Execution,hybrid_or,1.0,0.903226,31,0.0
+1,0,0,0,0.0,0.0,0.0,0.0,tactic,Exfiltration,wazuh_standard,0.0,0.0,1,0.0
+0,0,0,1,1.0,0.5,1.0,0.0,tactic,Exfiltration,lexical_pipeline,1.0,1.0,1,0.0
+0,0,0,1,1.0,0.5,1.0,0.0,tactic,Exfiltration,hybrid_or,1.0,1.0,1,0.0
+14,0,0,0,0.0,0.0,0.0,0.0,tactic,Lateral Movement,wazuh_standard,0.0,0.0,14,0.0
+5,0,0,9,0.642857,0.321429,0.782609,0.0,tactic,Lateral Movement,lexical_pipeline,1.0,0.642857,14,0.0
+5,0,0,9,0.642857,0.321429,0.782609,0.0,tactic,Lateral Movement,hybrid_or,1.0,0.642857,14,0.0
+14,0,0,0,0.0,0.0,0.0,0.0,tactic,Persistence,wazuh_standard,0.0,0.0,14,0.0
+0,0,0,14,1.0,0.5,1.0,0.0,tactic,Persistence,lexical_pipeline,1.0,1.0,14,0.0
+0,0,0,14,1.0,0.5,1.0,0.0,tactic,Persistence,hybrid_or,1.0,1.0,14,0.0

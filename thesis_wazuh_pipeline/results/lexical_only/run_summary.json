@@ -1,0 +1,76 @@
+{
+  "dataset_path": "C:\\Users\\alsoh\\Downloads\\powershell_scriptblock_dataset_final_thesis_v4_package\\powershell_scriptblock_samples_final_thesis_v4.json",
+  "alert_path": null,
+  "out_dir": "thesis_wazuh_pipeline\\results\\lexical_only",
+  "threshold": 6,
+  "sample_count": 300,
+  "wazuh_alert_count_total": 0,
+  "wazuh_alert_count_mapped_to_samples": 0,
+  "mapped_sample_count": 0,
+  "label_counts": {
+    "benign": 150,
+    "simulated_malicious": 150
+  },
+  "obfuscation_counts": {
+    "none": 180,
+    "base64_literal_decode_safe": 20,
+    "string_concatenation": 20,
+    "backtick_literal": 20,
+    "mixed_case": 20,
+    "alias_command_reconstruction": 20,
+    "combined_obfuscation": 20
+  },
+  "overall_metrics": [
+    {
+      "method": "wazuh_standard",
+      "group_field": "all",
+      "group_value": "all",
+      "sample_count": 300,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "fpr": 0.0,
+      "specificity": 1.0,
+      "accuracy": 0.5,
+      "balanced_accuracy": 0.5,
+      "TP": 0,
+      "FP": 0,
+      "TN": 150,
+      "FN": 150
+    },
+    {
+      "method": "lexical_pipeline",
+      "group_field": "all",
+      "group_value": "all",
+      "sample_count": 300,
+      "precision": 0.901515,
+      "recall": 0.793333,
+      "f1": 0.843972,
+      "fpr": 0.086667,
+      "specificity": 0.913333,
+      "accuracy": 0.853333,
+      "balanced_accuracy": 0.853333,
+      "TP": 119,
+      "FP": 13,
+      "TN": 137,
+      "FN": 31
+    },
+    {
+      "method": "hybrid_or",
+      "group_field": "all",
+      "group_value": "all",
+      "sample_count": 300,
+      "precision": 0.901515,
+      "recall": 0.793333,
+      "f1": 0.843972,
+      "fpr": 0.086667,
+      "specificity": 0.913333,
+      "accuracy": 0.853333,
+      "balanced_accuracy": 0.853333,
+      "TP": 119,
+      "FP": 13,
+      "TN": 137,
+      "FN": 31
+    }
+  ]
+}
