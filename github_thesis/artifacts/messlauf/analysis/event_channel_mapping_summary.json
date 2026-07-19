@@ -1,0 +1,14 @@
+{
+  "source_field": "Microsoft-Windows-PowerShell/Operational:4104/EventData/ScriptBlockText",
+  "channel": "Microsoft-Windows-PowerShell/Operational",
+  "event_id": 4104,
+  "raw_event_count": 300,
+  "mapped_sample_count": 300,
+  "status_counts": {
+    "mapped": 300
+  },
+  "exact_dataset_scriptblock_match_count": 300,
+  "non_exact_dataset_scriptblock_ids": [],
+  "missing_sample_ids": [],
+  "duplicate_sample_ids": []
+}

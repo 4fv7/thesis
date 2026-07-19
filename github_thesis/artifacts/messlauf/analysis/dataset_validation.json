@@ -1,0 +1,42 @@
+{
+  "sample_count": 300,
+  "unique_ids": 300,
+  "label_counts": {
+    "simulated_malicious": 150,
+    "benign": 150
+  },
+  "dataset_group_counts": {
+    "obfuscated_indicator": 120,
+    "hard_benign": 50,
+    "normal_benign": 100,
+    "clear_indicator": 30
+  },
+  "obfuscation_counts": {
+    "alias_command_reconstruction": 20,
+    "none": 180,
+    "combined_obfuscation": 20,
+    "backtick_literal": 20,
+    "string_concatenation": 20,
+    "base64_literal_decode_safe": 20,
+    "mixed_case": 20
+  },
+  "evaluation_group_count": 105,
+  "exact_duplicate_core_sets": 0,
+  "casefold_duplicate_core_sets": 20,
+  "cross_group_casefold_duplicate_sets": [],
+  "metadata_leakage": [],
+  "analysis_text_mismatch_ids": [],
+  "instrumentation_residue_ids": [],
+  "source_missing_ids": [],
+  "id_prefixes_by_label": {
+    "simulated_malicious": [
+      "PST"
+    ],
+    "benign": [
+      "PST"
+    ]
+  },
+  "errors": [],
+  "warnings": [],
+  "valid": true
+}

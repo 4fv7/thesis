@@ -1,0 +1,41 @@
+method,group_field,group_value,sample_count,positive_count,negative_count,precision,recall,f1,fpr,specificity,accuracy,balanced_accuracy,TP,FP,TN,FN
+wazuh_standard,tactic,Benign Administration,150,0,150,0.0,,,0.226667,0.773333,0.773333,,0,34,116,0
+lexical_pipeline,tactic,Benign Administration,150,0,150,0.0,,,0.106667,0.893333,0.893333,,0,16,134,0
+hybrid_or,tactic,Benign Administration,150,0,150,0.0,,,0.28,0.72,0.72,,0,42,108,0
+hybrid_and,tactic,Benign Administration,150,0,150,0.0,,,0.053333,0.946667,0.946667,,0,8,142,0
+wazuh_standard,tactic,Collection,15,15,0,1.0,0.533333,0.695652,,,0.533333,,8,0,0,7
+lexical_pipeline,tactic,Collection,15,15,0,1.0,0.6,0.75,,,0.6,,9,0,0,6
+hybrid_or,tactic,Collection,15,15,0,1.0,0.933333,0.965517,,,0.933333,,14,0,0,1
+hybrid_and,tactic,Collection,15,15,0,1.0,0.2,0.333333,,,0.2,,3,0,0,12
+wazuh_standard,tactic,Command and Control,30,30,0,1.0,0.333333,0.5,,,0.333333,,10,0,0,20
+lexical_pipeline,tactic,Command and Control,30,30,0,1.0,0.9,0.947368,,,0.9,,27,0,0,3
+hybrid_or,tactic,Command and Control,30,30,0,1.0,0.933333,0.965517,,,0.933333,,28,0,0,2
+hybrid_and,tactic,Command and Control,30,30,0,1.0,0.3,0.461538,,,0.3,,9,0,0,21
+wazuh_standard,tactic,Credential Access,10,10,0,1.0,0.4,0.571429,,,0.4,,4,0,0,6
+lexical_pipeline,tactic,Credential Access,10,10,0,1.0,0.7,0.823529,,,0.7,,7,0,0,3
+hybrid_or,tactic,Credential Access,10,10,0,1.0,0.9,0.947368,,,0.9,,9,0,0,1
+hybrid_and,tactic,Credential Access,10,10,0,1.0,0.2,0.333333,,,0.2,,2,0,0,8
+wazuh_standard,tactic,Defense Evasion,40,40,0,1.0,0.275,0.431373,,,0.275,,11,0,0,29
+lexical_pipeline,tactic,Defense Evasion,40,40,0,1.0,0.675,0.80597,,,0.675,,27,0,0,13
+hybrid_or,tactic,Defense Evasion,40,40,0,1.0,0.725,0.84058,,,0.725,,29,0,0,11
+hybrid_and,tactic,Defense Evasion,40,40,0,1.0,0.225,0.367347,,,0.225,,9,0,0,31
+wazuh_standard,tactic,Discovery,15,15,0,1.0,0.4,0.571429,,,0.4,,6,0,0,9
+lexical_pipeline,tactic,Discovery,15,15,0,1.0,0.6,0.75,,,0.6,,9,0,0,6
+hybrid_or,tactic,Discovery,15,15,0,1.0,0.866667,0.928571,,,0.866667,,13,0,0,2
+hybrid_and,tactic,Discovery,15,15,0,1.0,0.133333,0.235294,,,0.133333,,2,0,0,13
+wazuh_standard,tactic,Execution,20,20,0,1.0,0.35,0.518519,,,0.35,,7,0,0,13
+lexical_pipeline,tactic,Execution,20,20,0,1.0,0.7,0.823529,,,0.7,,14,0,0,6
+hybrid_or,tactic,Execution,20,20,0,1.0,0.7,0.823529,,,0.7,,14,0,0,6
+hybrid_and,tactic,Execution,20,20,0,1.0,0.35,0.518519,,,0.35,,7,0,0,13
+wazuh_standard,tactic,Exfiltration,5,5,0,1.0,0.2,0.333333,,,0.2,,1,0,0,4
+lexical_pipeline,tactic,Exfiltration,5,5,0,1.0,1.0,1.0,,,1.0,,5,0,0,0
+hybrid_or,tactic,Exfiltration,5,5,0,1.0,1.0,1.0,,,1.0,,5,0,0,0
+hybrid_and,tactic,Exfiltration,5,5,0,1.0,0.2,0.333333,,,0.2,,1,0,0,4
+wazuh_standard,tactic,Lateral Movement,5,5,0,1.0,0.8,0.888889,,,0.8,,4,0,0,1
+lexical_pipeline,tactic,Lateral Movement,5,5,0,1.0,1.0,1.0,,,1.0,,5,0,0,0
+hybrid_or,tactic,Lateral Movement,5,5,0,1.0,1.0,1.0,,,1.0,,5,0,0,0
+hybrid_and,tactic,Lateral Movement,5,5,0,1.0,0.8,0.888889,,,0.8,,4,0,0,1
+wazuh_standard,tactic,Persistence,10,10,0,1.0,0.3,0.461538,,,0.3,,3,0,0,7
+lexical_pipeline,tactic,Persistence,10,10,0,1.0,1.0,1.0,,,1.0,,10,0,0,0
+hybrid_or,tactic,Persistence,10,10,0,1.0,1.0,1.0,,,1.0,,10,0,0,0
+hybrid_and,tactic,Persistence,10,10,0,1.0,0.3,0.461538,,,0.3,,3,0,0,7

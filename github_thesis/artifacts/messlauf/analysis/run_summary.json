@@ -1,0 +1,167 @@
+{
+  "dataset_path": "/home/rashed/OffSecRepo/ctf_llm_inject/output/Bachelorarbeit_Rashed_Alsuhaibi/artifacts/dataset/powershell_scriptblock_samples.json",
+  "dataset_sha256": "12f6aa415bb8fe96b50f854c8590e98769ece2c2cbd3775118294e32b58c4ae3",
+  "alert_path": "/home/rashed/OffSecRepo/ctf_llm_inject/output/Bachelorarbeit_Rashed_Alsuhaibi/artifacts/messlauf/capture/alerts_standard_rules_dataset_run.jsonl",
+  "alert_sha256": "b155cd316b3f0324dad612cafbdd1155068df859594e01bb8eaad5784ea3afe2",
+  "event_channel_path": "/home/rashed/OffSecRepo/ctf_llm_inject/output/Bachelorarbeit_Rashed_Alsuhaibi/artifacts/messlauf/local_event4104_dataset_run.jsonl",
+  "event_channel_sha256": "127adf5aed259214836d8270d809a45a64a46ac05f988116c58e07ee8abb4a90",
+  "lexical_input_source": "Microsoft-Windows-PowerShell/Operational:4104/EventData/ScriptBlockText",
+  "event_channel_mapping": {
+    "source_field": "Microsoft-Windows-PowerShell/Operational:4104/EventData/ScriptBlockText",
+    "channel": "Microsoft-Windows-PowerShell/Operational",
+    "event_id": 4104,
+    "raw_event_count": 300,
+    "mapped_sample_count": 300,
+    "status_counts": {
+      "mapped": 300
+    },
+    "exact_dataset_scriptblock_match_count": 300,
+    "non_exact_dataset_scriptblock_ids": [],
+    "missing_sample_ids": [],
+    "duplicate_sample_ids": []
+  },
+  "out_dir": "/home/rashed/OffSecRepo/ctf_llm_inject/output/Bachelorarbeit_Rashed_Alsuhaibi/artifacts/messlauf/analysis",
+  "evaluation_mode": "grouped_cv",
+  "folds": 5,
+  "seed": 20260711,
+  "max_fpr_for_threshold_selection": 0.1,
+  "deployment_threshold_full_dataset": 5,
+  "cv_selected_thresholds": [
+    {
+      "fold": 0,
+      "selected_threshold": 4,
+      "training_sample_count": 240,
+      "test_sample_count": 60,
+      "training_f1": 0.796296,
+      "training_fpr": 0.083333,
+      "training_recall": 0.716667
+    },
+    {
+      "fold": 1,
+      "selected_threshold": 5,
+      "training_sample_count": 240,
+      "test_sample_count": 60,
+      "training_f1": 0.811321,
+      "training_fpr": 0.05,
+      "training_recall": 0.716667
+    },
+    {
+      "fold": 2,
+      "selected_threshold": 3,
+      "training_sample_count": 240,
+      "test_sample_count": 60,
+      "training_f1": 0.886076,
+      "training_fpr": 0.1,
+      "training_recall": 0.875
+    },
+    {
+      "fold": 3,
+      "selected_threshold": 4,
+      "training_sample_count": 240,
+      "test_sample_count": 60,
+      "training_f1": 0.810811,
+      "training_fpr": 0.1,
+      "training_recall": 0.75
+    },
+    {
+      "fold": 4,
+      "selected_threshold": 6,
+      "training_sample_count": 240,
+      "test_sample_count": 60,
+      "training_f1": 0.843602,
+      "training_fpr": 0.016667,
+      "training_recall": 0.741667
+    }
+  ],
+  "sample_count": 300,
+  "alert_mapping": {
+    "raw_count": 88,
+    "retained_count": 88,
+    "status_counts": {
+      "mapped": 88
+    },
+    "filtered_counts": {},
+    "mapped_alert_count": 88,
+    "mapped_sample_count": 88
+  },
+  "overall_metrics": [
+    {
+      "method": "wazuh_standard",
+      "group_field": "all",
+      "group_value": "all",
+      "sample_count": 300,
+      "positive_count": 150,
+      "negative_count": 150,
+      "precision": 0.613636,
+      "recall": 0.36,
+      "f1": 0.453782,
+      "fpr": 0.226667,
+      "specificity": 0.773333,
+      "accuracy": 0.566667,
+      "balanced_accuracy": 0.566667,
+      "TP": 54,
+      "FP": 34,
+      "TN": 116,
+      "FN": 96
+    },
+    {
+      "method": "lexical_pipeline",
+      "group_field": "all",
+      "group_value": "all",
+      "sample_count": 300,
+      "positive_count": 150,
+      "negative_count": 150,
+      "precision": 0.875969,
+      "recall": 0.753333,
+      "f1": 0.810036,
+      "fpr": 0.106667,
+      "specificity": 0.893333,
+      "accuracy": 0.823333,
+      "balanced_accuracy": 0.823333,
+      "TP": 113,
+      "FP": 16,
+      "TN": 134,
+      "FN": 37
+    },
+    {
+      "method": "hybrid_or",
+      "group_field": "all",
+      "group_value": "all",
+      "sample_count": 300,
+      "positive_count": 150,
+      "negative_count": 150,
+      "precision": 0.751479,
+      "recall": 0.846667,
+      "f1": 0.796238,
+      "fpr": 0.28,
+      "specificity": 0.72,
+      "accuracy": 0.783333,
+      "balanced_accuracy": 0.783333,
+      "TP": 127,
+      "FP": 42,
+      "TN": 108,
+      "FN": 23
+    },
+    {
+      "method": "hybrid_and",
+      "group_field": "all",
+      "group_value": "all",
+      "sample_count": 300,
+      "positive_count": 150,
+      "negative_count": 150,
+      "precision": 0.833333,
+      "recall": 0.266667,
+      "f1": 0.40404,
+      "fpr": 0.053333,
+      "specificity": 0.946667,
+      "accuracy": 0.606667,
+      "balanced_accuracy": 0.606667,
+      "TP": 40,
+      "FP": 8,
+      "TN": 142,
+      "FN": 110
+    }
+  ],
+  "bootstrap_iterations": 2000,
+  "interpretation": "Lexical features are computed from ScriptBlockText captured directly from the Windows PowerShell Operational channel. Primary lexical metrics are out-of-fold estimates grouped by behavior family. Wazuh metrics use only standard-rule alerts from the same instrumented executions."
+}

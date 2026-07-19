@@ -1,0 +1,49 @@
+{
+  "mitre_attack": {
+    "title": "MITRE ATT&CK Enterprise",
+    "url": "https://attack.mitre.org/",
+    "accessed": "2026-07-11"
+  },
+  "atomic_red_team": {
+    "title": "Atomic Red Team",
+    "url": "https://github.com/redcanaryco/atomic-red-team",
+    "commit": "94153597065a5cb453168ae177f48c9d30e89edb",
+    "accessed": "2026-07-11"
+  },
+  "invoke_obfuscation": {
+    "title": "Invoke-Obfuscation",
+    "url": "https://github.com/danielbohannon/Invoke-Obfuscation",
+    "commit": "f20e7f843edd0a3a7716736e9eddfa423395dd26",
+    "accessed": "2026-07-11"
+  },
+  "sigma": {
+    "title": "Sigma main rule repository",
+    "url": "https://github.com/SigmaHQ/sigma",
+    "commit": "282369fa76c5cd6103b055478fbaebec8530cfa5",
+    "accessed": "2026-07-11"
+  },
+  "lolbas": {
+    "title": "LOLBAS",
+    "url": "https://github.com/LOLBAS-Project/LOLBAS",
+    "commit": "a2784c79091cb282fefb68f0056a853cfafd7e3c",
+    "accessed": "2026-07-11"
+  },
+  "microsoft_powershell": {
+    "title": "Microsoft PowerShell documentation",
+    "url": "https://learn.microsoft.com/powershell/",
+    "accessed": "2026-07-11"
+  },
+  "wazuh_powershell_guidance": {
+    "title": "Detecting PowerShell exploitation techniques in Windows using Wazuh",
+    "url": "https://wazuh.com/blog/detecting-powershell-exploitation-techniques-in-windows-using-wazuh/",
+    "accessed": "2026-07-11"
+  },
+  "wazuh_installed_rules": {
+    "title": "Installed Wazuh PowerShell standard rules",
+    "path": "/var/ossec/ruleset/rules/0915-win-powershell_rules.xml",
+    "server_version": "4.14.5-rc1",
+    "agent_version": "4.14.4",
+    "sha256": "b358b3c4dd597fde075e7749401feff78728431f9e24c77a3c01399cac10739f",
+    "accessed": "2026-07-11"
+  }
+}

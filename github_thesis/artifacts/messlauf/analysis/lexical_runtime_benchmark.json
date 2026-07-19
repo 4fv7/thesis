@@ -1,0 +1,50 @@
+{
+  "scope": "single-process CPU microbenchmark of feature extraction and lexical scoring; excludes event collection, JSON parsing, Wazuh, storage and network I/O",
+  "source_sample_count": 300,
+  "operation_counts": [
+    300,
+    1500,
+    3000
+  ],
+  "python_version": "3.13.12",
+  "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.42",
+  "logical_cpu_count": 20,
+  "results": [
+    {
+      "operation_count": 300,
+      "wall_seconds": 0.499035,
+      "cpu_seconds": 0.499053,
+      "throughput_events_per_second": 601.16,
+      "mean_latency_ms": 1.661,
+      "median_latency_ms": 1.5908,
+      "p95_latency_ms": 2.3498,
+      "p99_latency_ms": 2.5117,
+      "peak_python_memory_mib": 0.091,
+      "score_checksum": 2240
+    },
+    {
+      "operation_count": 1500,
+      "wall_seconds": 2.588208,
+      "cpu_seconds": 2.588161,
+      "throughput_events_per_second": 579.55,
+      "mean_latency_ms": 1.7229,
+      "median_latency_ms": 1.6413,
+      "p95_latency_ms": 2.4024,
+      "p99_latency_ms": 2.7794,
+      "peak_python_memory_mib": 0.128,
+      "score_checksum": 11200
+    },
+    {
+      "operation_count": 3000,
+      "wall_seconds": 5.249325,
+      "cpu_seconds": 5.249103,
+      "throughput_events_per_second": 571.5,
+      "mean_latency_ms": 1.7473,
+      "median_latency_ms": 1.6666,
+      "p95_latency_ms": 2.4789,
+      "p99_latency_ms": 2.9405,
+      "peak_python_memory_mib": 0.175,
+      "score_checksum": 22400
+    }
+  ]
+}

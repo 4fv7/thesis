@@ -1,0 +1,17 @@
+{
+  "started_at_utc": "2026-07-17T09:35:21.4595167Z",
+  "finished_at_utc": "2026-07-17T09:38:02.1912114Z",
+  "channel": "Microsoft-Windows-PowerShell/Operational",
+  "event_id": 4104,
+  "starting_record_id": 721225,
+  "ending_record_id": 724075,
+  "expected_sample_count": 300,
+  "captured_record_count": 300,
+  "unique_sample_count": 300,
+  "missing_sample_ids": [],
+  "duplicate_sample_ids": {},
+  "invalid_instrumentation_records": [],
+  "event_export_sha256": "127adf5aed259214836d8270d809a45a64a46ac05f988116c58e07ee8abb4a90",
+  "event_export_path_at_capture": "C:\\Users\\alsoh\\AppData\\Local\\Temp\\strict_measurement_20260717_0935\\local_event4104_dataset_run.jsonl",
+  "packaged_event_export_path": "artifacts/messlauf/local_event4104_dataset_run.jsonl"
+}

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# LaTeX-Hilfsdateien
+*.aux
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lol
+*.lot
+*.out
+*.synctex.gz
+*.toc
+
+# Reproduzierte, nicht eingefrorene Ausgaben
+artifacts/reproduced_analysis/
+reproduced_figures/
+
+# Lokale Prüf- und Betriebsspuren
+figures/_review/
+event4104_capture_ready.json
+Thumbs.db
+*Zone.Identifier*

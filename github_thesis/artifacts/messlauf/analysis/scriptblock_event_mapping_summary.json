@@ -1,0 +1,34 @@
+{
+  "source_field": "data.win.eventdata.scriptBlockText",
+  "raw_event_count": 300,
+  "retained_fragment_count": 300,
+  "assembled_scriptblock_count": 300,
+  "mapped_sample_count": 300,
+  "status_counts": {
+    "mapped": 300
+  },
+  "filtered_counts": {},
+  "multi_fragment_scriptblock_count": 0,
+  "transport_normalization_changed_count": 300,
+  "exact_dataset_scriptblock_match_count": 298,
+  "line_ending_only_count": 0,
+  "backtick_line_continuation_rendering_count": 2,
+  "accepted_dataset_representation_count": 300,
+  "fidelity_status_counts": {
+    "exact": 298,
+    "line_ending_only": 0,
+    "backtick_line_continuation_rendering": 2,
+    "unclassified_whitespace_drift": 0,
+    "content_drift": 0
+  },
+  "line_ending_only_ids": [],
+  "backtick_line_continuation_rendering_ids": [
+    "PST-033",
+    "PST-090"
+  ],
+  "unclassified_whitespace_drift_ids": [],
+  "content_drift_ids": [],
+  "missing_sample_ids": [],
+  "duplicate_sample_ids": [],
+  "assembly_errors": []
+}

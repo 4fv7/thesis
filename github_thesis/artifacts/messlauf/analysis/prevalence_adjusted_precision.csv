@@ -1,0 +1,17 @@
+method,assumed_prevalence,recall,fpr,expected_precision
+wazuh_standard,0.01,0.36,0.226667,0.015789
+wazuh_standard,0.05,0.36,0.226667,0.077143
+wazuh_standard,0.1,0.36,0.226667,0.15
+wazuh_standard,0.5,0.36,0.226667,0.613636
+lexical_pipeline,0.01,0.753333,0.106667,0.066588
+lexical_pipeline,0.05,0.753333,0.106667,0.270983
+lexical_pipeline,0.1,0.753333,0.106667,0.439688
+lexical_pipeline,0.5,0.753333,0.106667,0.875969
+hybrid_or,0.01,0.846667,0.28,0.029638
+hybrid_or,0.05,0.846667,0.28,0.137297
+hybrid_or,0.1,0.846667,0.28,0.251485
+hybrid_or,0.5,0.846667,0.28,0.751479
+hybrid_and,0.01,0.266667,0.053333,0.048077
+hybrid_and,0.05,0.266667,0.053333,0.208335
+hybrid_and,0.1,0.266667,0.053333,0.357145
+hybrid_and,0.5,0.266667,0.053333,0.833334

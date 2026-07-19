@@ -1,0 +1,1385 @@
+\documentclass[12pt,a4paper,oneside,parskip=half]{scrreprt}
+
+%--------------------------------------------------------------------
+% Sprache, Kodierung und Seitenlayout
+%--------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage[autostyle=true,german=quotes]{csquotes}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[
+    left=3.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=3.0cm,
+    headheight=18pt,
+    headsep=6mm,
+    footskip=12mm
+]{geometry}
+\usepackage{setspace}
+\usepackage{scrlayer-scrpage}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{bookmark}
+%--------------------------------------------------------------------
+% Tabellen, Listen, Abbildungen und Code
+%--------------------------------------------------------------------
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\onehalfspacing
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\KOMAoptions{toc=chapterentrydotfill,numbers=noendperiod}
+\setkomafont{chapterentry}{\normalfont}
+\setkomafont{chapterentrypagenumber}{\normalfont}
+\DeclareTOCStyleEntry[
+    beforeskip=0.1em,
+    indent=0pt,
+    numwidth=2.3em
+]{tocline}{chapter}
+\DeclareTOCStyleEntry[
+    beforeskip=0pt,
+    indent=1.6em,
+    numwidth=3.0em
+]{tocline}{section}
+\DeclareTOCStyleEntry[
+    beforeskip=0pt,
+    indent=4.2em,
+    numwidth=3.8em
+]{tocline}{subsection}
+
+\clearpairofpagestyles
+\ofoot*{\pagemark}
+\pagestyle{scrheadings}
+\renewcommand*{\titlepagestyle}{empty}
+\renewcommand*{\chapterpagestyle}{scrheadings}
+\setkomafont{pagefoot}{\normalfont\small}
+%--------------------------------------------------------------------
+% Einheitliche Schrift im gesamten Dokument
+%--------------------------------------------------------------------
+\setkomafont{disposition}{\normalfont\bfseries}
+\setkomafont{chapter}{\normalfont\huge\bfseries}
+\setkomafont{section}{\normalfont\Large\bfseries}
+\setkomafont{subsection}{\normalfont\large\bfseries}
+\setkomafont{subsubsection}{\normalfont\normalsize\bfseries}
+
+\setkomafont{pageheadfoot}{\normalfont\small}
+\setkomafont{pagefoot}{\normalfont\small}
+\setkomafont{caption}{\normalfont\small}
+\setkomafont{captionlabel}{\normalfont\small\bfseries}
+\captionsetup[table]{justification=centering,singlelinecheck=false}
+\captionsetup[figure]{justification=centering,singlelinecheck=false}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\arrayrulewidth}{0.4pt}
+\setlength{\tabcolsep}{6pt}
+\setlength{\extrarowheight}{2pt}
+\setkomafont{descriptionlabel}{\normalfont\bfseries}
+\setkomafont{title}{\normalfont\bfseries}
+\setkomafont{author}{\normalfont}
+\setkomafont{date}{\normalfont}
+\setlength{\emergencystretch}{3em}
+%--------------------------------------------------------------------
+% Einheitliche obere Position von Kapitelanfängen
+%--------------------------------------------------------------------
+\RedeclareSectionCommand[
+    beforeskip=0pt,
+    afterskip=0.8\baselineskip
+]{chapter}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=black,
+    unicode=true,
+    pdfauthor={Rashed Alsuhaibi},
+    pdftitle={Hostbasierte Erkennung obfuskierter PowerShell-Aktivität mittels ScriptBlock-Logging und Wazuh}
+}
+
+\lstdefinestyle{code}{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    columns=fullflexible,
+    keepspaces=true,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny,
+    xleftmargin=2em,
+    framexleftmargin=1.5em,
+    literate={ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1 {Ä}{{\"A}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1 {ß}{{\ss}}1
+}
+\lstset{style=code}
+\renewcommand{\lstlistingname}{Codeblock}
+\renewcommand{\lstlistlistingname}{Quell- und Pseudocodeverzeichnis}
+
+\newcommand{\metric}[1]{\textit{#1}}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\newcommand{\codecell}[1]{\begingroup\Urlmuskip=0mu plus 1mu\relax\nolinkurl{#1}\endgroup}
+\newcommand{\codebreak}[2]{\codecell{#1#2}}
+\newcommand{\codebreakthree}[3]{\codecell{#1#2#3}}
+
+\newcommand{\screenshotplaceholder}[3]{%
+\begin{figure}[H]
+\centering
+\IfFileExists{figures/screenshots/#1}{%
+    \includegraphics[width=\textwidth]{figures/screenshots/#1}%
+}{%
+    \fbox{%
+    \begin{minipage}{0.94\textwidth}
+    \centering
+    \vspace{0.65cm}
+    \textbf{Nachweisabbildung vor der Abgabe ergänzen}\\[0.25cm]
+    \path{figures/screenshots/#1}\\[0.2cm]
+    #2
+    \vspace{0.65cm}
+    \end{minipage}}
+}
+\caption[#2]{#2}
+\label{#3}
+\end{figure}
+}
+
+\newcommand{\diagramfigure}[4][\textwidth]{%
+\begin{figure}[H]
+\centering
+\includegraphics[width=#1]{figures/#2}
+\caption[#3]{#3}
+\label{#4}
+\end{figure}
+}
+
+\begin{document}
+
+%--------------------------------------------------------------------
+% Titelseite und Verzeichnisse
+%--------------------------------------------------------------------
+\pagenumbering{roman}
+\begin{titlepage}
+\thispagestyle{empty}
+\newgeometry{left=2.8cm,right=2.8cm,top=1.6cm,bottom=1.5cm}
+\begin{center}
+
+{\Large Bachelorarbeit\par}
+
+\vspace{0.35cm}
+
+im Studiengang\\[0.2cm]
+{\large Informatik}
+
+\vspace{0.35cm}
+
+zur Erlangung des Grades eines\\[0.2cm]
+{\large Bachelor of Science (B.Sc.)}
+
+\vspace{0.55cm}
+
+Thema:\\[0.2cm]
+{\Large\bfseries Hostbasierte Erkennung obfuskierter PowerShell-Aktivität\\
+mittels ScriptBlock-Logging und Wazuh\par}
+\vspace{0.25cm}
+{\normalsize Ein Vergleich regelbasierter Wazuh-Erkennung und lexikalischer Merkmale\\
+auf Basis von ScriptBlock-Logging unter Windows 11\par}
+
+\vspace{0.75cm}
+
+vorgelegt von:\\[0.2cm]
+{\Large Rashed Alsuhaibi\par}
+\vspace{0.15cm}
+geb. am 17.05.2001 in Dschidda, Saudi-Arabien\\
+Matrikel-Nr.: 1459278
+
+\vspace{0.55cm}
+
+im Sommersemester 2026\\
+im Studiengang Informatik\\
+am Fachbereich Informatik und Ingenieurwissenschaften\\
+der Frankfurt University of Applied Sciences
+
+\end{center}
+
+\vfill
+
+\noindent\begin{tabularx}{\dimexpr\textwidth-12pt\relax}{@{}L{4.2cm}Y@{}}
+Bearbeitungsbeginn: & 18.05.2026\\
+Bearbeitungsende: & 20.07.2026\\[0.15cm]
+Hauptreferent: & Prof. Dr. Christian Baun\\
+Korreferent: & Prof. Dr. Thomas Gabel\\[0.15cm]
+Abgabedatum: & 20.07.2026
+\end{tabularx}
+
+\restoregeometry
+\end{titlepage}
+
+\chapter*{Eidesstattliche Erklärung}
+\addcontentsline{toc}{chapter}{Eidesstattliche Erklärung}
+Hiermit versichere ich, dass ich die vorliegende Arbeit selbstständig und ohne Benutzung anderer als der angegebenen Hilfsmittel angefertigt habe. Alle Stellen, die wörtlich oder sinngemäß aus veröffentlichten und nicht veröffentlichten Quellen entnommen wurden, sind als solche kenntlich gemacht. Die Arbeit wurde in gleicher oder ähnlicher Form noch keiner anderen Prüfungsbehörde vorgelegt.
+
+\vspace{2cm}
+\begin{tabular}{p{6cm}p{6cm}}
+Frankfurt am Main, 20.07.2026 &
+\IfFileExists{figures/unterschrift.png}{%
+    \hspace{1cm}% 
+    \raisebox{-1.5cm}[0pt][0pt]{%
+        \includegraphics[height=4cm]{figures/unterschrift.png}%
+    }%
+}{}\\[-0.5cm]
+\rule{6cm}{0.4pt} & \rule{6cm}{0.4pt}\\
+Ort, Datum & Unterschrift
+\end{tabular}
+\clearpage
+
+\chapter*{Danksagung}
+\addcontentsline{toc}{chapter}{Danksagung}
+Ich möchte mich bei allen Personen bedanken, die mich während der Erstellung dieser Bachelorarbeit fachlich und persönlich unterstützt haben. Mein besonderer Dank gilt Prof. Dr. Christian Baun für die fachliche Begleitung und die Rückmeldungen zur Eingrenzung des Themas sowie Prof. Dr. Thomas Gabel für die Übernahme des Korreferats. Ebenfalls danke ich Familie, Freunden und Kommilitoninnen und Kommilitonen für Motivation, Unterstützung und konstruktive Gespräche während der Bearbeitungszeit.
+\clearpage
+
+\chapter*{Zusammenfassung}
+\addcontentsline{toc}{chapter}{Zusammenfassung}
+Diese Bachelorarbeit untersucht die hostbasierte Erkennung obfuskierter PowerShell-Aktivität unter Windows 11. Verglichen werden die unveränderten PowerShell-Standardregeln von Wazuh, ein nachvollziehbares lexikalisches Punktemodell und eine statistische Vergleichsbasis aus Zeichen-\(n\)-Grammen mit Term Frequency--Inverse Document Frequency (TF-IDF) und logistischer Regression. Beide lexikalischen Verfahren lesen den Feldwert \texttt{ScriptBlockText} direkt aus Event-ID 4104 des Kanals \path{Microsoft-Windows-PowerShell/Operational}. Wazuh verarbeitet dieselben Ereignisse parallel über Agent und Manager.
+
+Der im Rahmen der Arbeit erzeugte und anschließend kuratierte Labordatensatz umfasst 300 ScriptBlocks. Er enthält 150 benigne Fälle und 150 simulierte Testfälle mit Angriffsindikatoren aus 30 definierten Verhaltensmustern. Öffentliche Quellen dienen nur zur Auswahl und Einordnung der Techniken; vollständige C2-Implantate oder Payload-Dateien wurden nicht übernommen. Aus den 30 Grundmustern entstanden 30 klare und 120 obfuskierte positive Varianten. Sie geben ausschließlich inerte Texte aus und führen weder Netzwerkzugriffe noch Persistenz- oder Schutzfunktionsänderungen aus. Der ausgeglichene, vom Verfasser gelabelte Datensatz bildet keine betriebliche Klassenverteilung ab.
+
+Im kontrollierten Messlauf wurden alle 300 Testfälle lokal erfasst. Eine getrennte managerseitige Prüfung bestätigte zusätzlich den Empfang aller 300 Ereignisse durch Wazuh; 88 davon führten zu einer Alarmmeldung der Standardregeln. Die lexikalischen Verfahren wurden in einer fünffachen, nach Verhaltensfamilien gruppierten Kreuzvalidierung bewertet. Wazuh erreichte eine Precision von 0{,}6136, einen Recall von 0{,}3600, einen F1-Score von 0{,}4538 und eine False-Positive-Rate von 0{,}2267. Das Punktemodell erreichte 0{,}8760, 0{,}7533, 0{,}8100 und 0{,}1067. Die statistische Vergleichsbasis erreichte 0{,}9060, 0{,}9000, 0{,}9030 und 0{,}0933. Eine isolierte Laufzeitmessung maß für das Punktemodell bei 300 Auswertungen im Mittel 1{,}661 Millisekunden je ScriptBlock.
+
+Die Ergebnisse zeigen innerhalb des untersuchten Datensatzes einen Nutzen lexikalischer Textmerkmale. Wegen der sicheren Testfallkonstruktion, des einzelnen Testhosts und der fehlenden Prüfung mit einem unabhängigen externen Datensatz erlauben sie jedoch keine Aussage über die Leistung in Produktivumgebungen.
+\clearpage
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+This bachelor thesis investigates host-based detection of obfuscated PowerShell activity on Windows 11. It compares the unchanged Wazuh standard rules for PowerShell, an interpretable lexical scoring model, and a statistical baseline using term frequency--inverse document frequency (TF-IDF) representations of character \(n\)-grams and logistic regression. Both lexical methods read \texttt{ScriptBlockText} directly from event ID 4104 in the \path{Microsoft-Windows-PowerShell/Operational} channel. Wazuh processes the same events in parallel through its agent and manager.
+
+The synthetic laboratory dataset was created and curated as part of this work. It contains 150 benign cases and 150 simulated indicator cases from 30 defined behavior patterns. Public sources were used only to select and classify the represented techniques; no complete C2 implants or payload files were imported. The 30 patterns produced 30 clear and 120 obfuscated positive variants. They only emit inert text and perform no network access, persistence, or security-control modification. The author-labeled dataset is balanced and does not represent an operational class distribution.
+
+During the controlled run, all 300 test cases were captured locally. A separate manager-side verification also confirmed receipt of all 300 events by Wazuh; 88 produced a standard-rule alert. The lexical methods were evaluated using five-fold grouped cross-validation, keeping each behavior family in one fold. Wazuh achieved a precision of 0.6136, recall of 0.3600, F1-score of 0.4538, and false-positive rate of 0.2267. The scoring model achieved 0.8760, 0.7533, 0.8100, and 0.1067. The statistical baseline achieved 0.9060, 0.9000, 0.9030, and 0.0933. A bounded runtime experiment measured a mean of 1.661 milliseconds per script block for the scoring model over 300 evaluations.
+
+Within the examined dataset, the results show that lexical text features provide additional detection value. The inert test construction, single test host, and absence of an independent external evaluation prevent conclusions about performance in production environments.
+\clearpage
+
+{\singlespacing
+\setlength{\parskip}{0pt}
+\tableofcontents
+}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+\listoffigures
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+\listoftables
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Quell- und Pseudocodeverzeichnis}
+\lstlistoflistings
+\clearpage
+
+\chapter*{Abkürzungsverzeichnis}
+\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.15}
+\noindent\begin{tabularx}{\dimexpr\textwidth-12pt\relax}{|L{3.2cm}|Y|}
+\hline
+\textbf{Abkürzung} & \textbf{Bedeutung}\\
+\hline
+AMSI & Antimalware Scan Interface\\
+\hline
+AST & Abstract Syntax Tree\\
+\hline
+C2 & Command and Control\\
+\hline
+F1 & F1-Score, harmonisches Mittel aus Precision und Recall\\
+\hline
+FN / FP & False Negative / False Positive\\
+\hline
+FPR & False-Positive-Rate\\
+\hline
+TF-IDF & Term Frequency--Inverse Document Frequency\\
+\hline
+JSON / JSONL & JavaScript Object Notation / zeilenorientiertes JSON\\
+\hline
+LOLBins & Living-off-the-Land Binaries\\
+\hline
+TN / TP & True Negative / True Positive\\
+\hline
+WSL & Windows Subsystem for Linux\\
+\hline
+XML & Extensible Markup Language\\
+\hline
+\end{tabularx}
+\endgroup
+\clearpage
+
+%--------------------------------------------------------------------
+% Hauptteil
+%--------------------------------------------------------------------
+\pagenumbering{arabic}
+
+\chapter{Einleitung}
+
+Dieses Kapitel führt in die untersuchte Erkennungsaufgabe ein. Es beschreibt Motivation und Problemstellung, legt Ziele und Forschungsfragen fest und grenzt den Sicherheits- und Geltungsbereich der Arbeit ab.
+
+\section{Motivation und Hintergrund}
+PowerShell ist unter Windows ein Werkzeug für Administration, Automatisierung und Systemverwaltung. Das MITRE-ATT\&CK-Framework führt ihre missbräuchliche Nutzung als Technik zur Befehls- und Skriptausführung \cite{mitre-powershell}. Administrative Skripte konfigurieren Systeme, werten Ereignisse aus und steuern Dienste. Dieselben Funktionen können auch für Angriffe eingesetzt werden. Dabei lassen sich Befehle dynamisch zusammensetzen, kodieren oder ohne zusätzliche ausführbare Datei starten. Die bloße Nutzung von PowerShell ist deshalb kein ausreichender Angriffsindikator.
+
+Obfuskierung verändert die textuelle Form eines Skripts, ohne dessen beabsichtigte Funktion zwingend zu ändern. Kodierung, String-Konkatenation, Backticks oder wechselnde Groß- und Kleinschreibung können feste Suchmuster umgehen. PowerShell ScriptBlock-Logging stellt mit Event-ID 4104 den interpretierten Skriptinhalt als hostbasierte Telemetrie bereit \cite{microsoft-logging-windows,microsoft-logging}. Diese Arbeit untersucht, wie die installierten Wazuh-Standardregeln und zwei lexikalische Verfahren auf dieser Datenquelle entscheiden.
+
+\section{Problemstellung}
+Regelbasierte Erkennung ordnet eine Alarmmeldung einem dokumentierten Muster zu. Diese Nachvollziehbarkeit ist nützlich, doch die Erkennung hängt von der beobachteten Schreibweise ab. Verändert Obfuskierung die erwarteten Tokens, bleibt eine Regel möglicherweise ohne Treffer. Breite Regeln können dagegen legitime Verwaltungsbefehle alarmieren.
+
+Der Vergleich benötigt daher identische Testfälle, eine nachgewiesene Telemetrieübertragung und getrennte Entscheidungen. Die Wazuh-Referenz bleibt unverändert. Als lexikalische Gegenstücke dienen ein erklärbares Punktemodell sowie eine statistische Vergleichsbasis aus Zeichen-\(n\)-Gramm-TF-IDF und logistischer Regression. Zwei binäre Verknüpfungen untersuchen ergänzend, ob sich Wazuh und Punktemodell sinnvoll kombinieren lassen.
+
+\section{Zielsetzung der Arbeit}
+Ziel ist die Konzeption, Implementierung und Auswertung eines hostbasierten Erkennungs- und Evaluierungssystems für obfuskierte PowerShell-Aktivität unter Windows 11. Die Untersuchung verfolgt folgende Teilziele:
+\begin{enumerate}[label=Z\arabic*]
+    \item Aufbau eines kontrollierten Windows-11-Labors mit ScriptBlock-Logging und Wazuh-Anbindung.
+    \item Erstellung eines dokumentierten, synthetischen Labordatensatzes mit benignen und simulierten ScriptBlocks sowie kontrollierten Obfuskationsvarianten.
+    \item Messung der unveränderten Wazuh-Standardregeln einschließlich eines managerseitigen Empfangsnachweises.
+    \item Implementierung eines lexikalischen Punktemodells mit direktem Event-4104-Eingang.
+    \item Implementierung einer statistischen lexikalischen Vergleichsbasis unter denselben gruppierten Teilstichproben.
+    \item Vergleich anhand von Precision, Recall, F1-Score, False-Positive-Rate und einer isolierten Laufzeitmessung.
+\end{enumerate}
+\section{Forschungsfragen}
+Die zentrale Forschungsfrage lautet:
+\begin{quote}
+Welche Erkennungsleistung zeigen unveränderte Wazuh-Standardregeln und lexikalische Verfahren bei obfuskierten PowerShell-ScriptBlocks im festgelegten Laborversuch?
+\end{quote}
+
+Daraus folgen fünf Teilfragen:
+\begin{enumerate}[label=F\arabic*]
+    \item Welche obfuskierten Testfälle lösen eine Wazuh-Standardregel aus?
+    \item Welche Merkmale und Rekonstruktionsschritte tragen zum Ergebnis des lexikalischen Punktemodells bei?
+    \item Wie unterscheiden sich Punktemodell und statistische Zeichen-\(n\)-Gramm-Vergleichsbasis?
+    \item Wie verändern ODER- und UND-Verknüpfung von Wazuh und Punktemodell die Kennzahlen?
+    \item Bei welchen benignen Gruppen und Obfuskierungsarten entstehen Fehlentscheidungen?
+\end{enumerate}
+
+\section{Abgrenzung und Sicherheitsrahmen}
+Alle Experimente finden in einer lokalen Laborumgebung statt. C2-nahe und andere schädlich wirkende Muster werden ausschließlich als nicht ausgeführte Zeichenketten dargestellt. Es werden weder externe C2-Verbindungen hergestellt noch funktionsfähige Schadsoftware oder nachgeladene Nutzlasten ausgeführt. Netzwerkindikatoren verwenden reservierte \texttt{.invalid}-Domänen und IANA-TEST-NET-Adressen gemäß RFC 2606 und RFC 5737 \cite{rfc2606,rfc5737}.
+
+Die Untersuchung beschränkt sich auf Event-ID 4104, Windows PowerShell 5.1, einen Windows-11-Host und die installierte Wazuh-Regelbasis. Sie bewertet keine vollständige Endpoint-Detection-and-Response-Lösung. Organisationsspezifische Skripte, reale Schadsoftwareausführung und unabhängige Zweitlabels liegen nicht vor.
+
+\section{Vorgehensweise}
+Zunächst werden Datensatz, Sicherheitsprüfungen und Laboraufbau festgelegt. Ein kontrollierter Lauf erzeugt Event-4104-Telemetrie, die lokal und managerseitig auf Vollständigkeit geprüft wird. Danach werden Wazuh-Alarme, das lexikalische Punktemodell und die statistische Vergleichsbasis mit denselben IDs und Labels ausgewertet. Gruppierte Kreuzvalidierung trennt verwandte Verhaltensfamilien zwischen Trainings- und Testteilstichproben. Bootstrap-Intervalle, Prävalenzrechnung, Fehleranalyse und Laufzeitmessung ergänzen die Punktkennzahlen.
+
+\section{Aufbau der Arbeit}
+Kapitel 2 erläutert PowerShell, ScriptBlock-Logging, Obfuskierung, Wazuh und lexikalische Merkmale. Kapitel 3 vergleicht verwandte regelbasierte, lernbasierte und deobfuskierende Ansätze. Kapitel 4 beschreibt Versuchsdesign, Datensatz und Bewertungsverfahren. Kapitel 5 dokumentiert die Implementierung und die Nachweise der Datenerfassung. Kapitel 6 enthält die Messergebnisse. Kapitel 7 diskutiert Aussagekraft und Grenzen. Kapitel 8 beantwortet die Forschungsfragen und schließt mit einem Ausblick.
+\chapter{Grundlagen}
+
+Dieses Kapitel erläutert die technischen Begriffe und Datenflüsse des Versuchs. Der Schwerpunkt liegt auf PowerShell, Event-ID 4104, Obfuskierung, hostbasierter Erkennung, Wazuh und textbasierten Merkmalen.
+
+\section{PowerShell als Administrations- und Automatisierungsumgebung}
+PowerShell verbindet Kommandozeile, Skriptsprache und Zugriff auf .NET sowie Windows-Verwaltungsschnittstellen. Skripte können Dateien, Prozesse, Dienste, Registry, Netzwerkfunktionen und Systeminformationen verarbeiten. Da PowerShell auf Windows-Systemen vorhanden ist, lässt sie sich auch im Sinne des Living-off-the-Land-Prinzips missbrauchen. Für die Erkennung sind daher Inhalt und Kontext eines ScriptBlocks aussagekräftiger als der Prozessname allein.
+
+\section{ScriptBlock-Logging}
+PowerShell ScriptBlock-Logging speichert ausgeführte ScriptBlocks im Kanal \path{Microsoft-Windows-PowerShell/Operational} \cite{microsoft-logging-windows,microsoft-logging}. Event-ID 4104 enthält den Feldwert \texttt{ScriptBlockText}. Dieser kann mehr Inhalt bereitstellen als eine reine Prozessstartmeldung. Lange ScriptBlocks können in mehreren Fragmenten auftreten; deshalb muss eine Erfassung Fragmentierung, Ereignis-ID und vollständigen Text prüfen.
+
+Im Versuchsaufbau lesen zwei Pfade denselben Kanal. Ein lokaler Erfasser schreibt \texttt{ScriptBlockText} für die lexikalische Analyse in eine JSONL-Datei. Der Wazuh-Agent überträgt die Ereignisse parallel an den Manager. Damit bleibt die Texteingabe der lexikalischen Verfahren von der Wazuh-Alarmbildung getrennt.
+
+\section{PowerShell-Obfuskierung}
+Obfuskierung verändert die Darstellung eines Skripts, um seine Analyse zu erschweren. Tabelle~\ref{tab:obfuscation-techniques} fasst die im Datensatz betrachteten Kategorien zusammen.
+
+\begin{table}[H]
+\centering
+\caption[Betrachtete PowerShell-Obfuskierungstechniken]{Betrachtete PowerShell-Obfuskierungstechniken}
+\label{tab:obfuscation-techniques}
+\begin{tabularx}{\textwidth}{|L{4.4cm}|Y|}
+\hline
+\textbf{Technik} & \textbf{Auswirkung auf die Textdarstellung}\\
+\hline
+Base64-Kodierung & Ersetzt lesbaren Text durch eine kodierte Zeichenfolge, die vor einer Inhaltsprüfung dekodiert werden muss.\\
+\hline
+String-Konkatenation & Teilt Tokens auf mehrere Literale auf und setzt sie erst durch Operatoren oder Methoden zusammen.\\
+\hline
+Backticks & Unterbrechen oder maskieren Zeichenfolgen mit einem PowerShell-spezifischen Escape-Zeichen.\\
+\hline
+Gemischte Schreibweise & Variiert Groß- und Kleinschreibung in Befehlen und Indikatoren.\\
+\hline
+Alias- und Befehlsrekonstruktion & Ersetzt ausgeschriebene Cmdlets durch Aliase oder baut Befehle aus Fragmenten auf.\\
+\hline
+Kombinierte Obfuskation & Verwendet mindestens zwei der genannten Veränderungen im selben ScriptBlock.\\
+\hline
+\end{tabularx}
+\end{table}
+\section{Hostbasierte Angriffserkennung}
+Hostbasierte Systeme zur Angriffserkennung werten Ereignisse eines Endsystems aus. Dazu gehören Protokolle, Prozesse, Konfigurations- und Dateiänderungen. NIST ordnet hostbasierte Verfahren als eine Kategorie von Intrusion-Detection- und Intrusion-Prevention-Systemen ein \cite{nist-idps}. Für PowerShell ist der Endpunkt relevant, weil dort der interpretierte Skriptinhalt vorliegt, auch wenn Netzwerkverkehr verschlüsselt ist oder keine zusätzliche Datei entsteht.
+
+\section{Wazuh}
+Wazuh ist eine quelloffene Plattform zur Sicherheitsüberwachung. Ein Endpunktagent sammelt Ereignisse, der Manager wertet sie mit Decodern und XML-Regeln aus und schreibt passende Alarmmeldungen \cite{wazuh-log-collection,wazuh-rules}. Im Versuch sammelt der Agent den PowerShell-Ereigniskanal. Die installierten PowerShell-Standardregeln bilden die regelbasierte Referenz. Eine Alarmmeldung enthält unter anderem Regel-ID, Regelstufe, Agent und Ereignisdaten.
+
+Das Ereignisarchiv des Managers und das Alarmprotokoll erfüllen verschiedene Aufgaben. Das Archiv kann den Eingang eines Ereignisses belegen, auch wenn keine Regel auslöst. Das Alarmprotokoll enthält dagegen nur Ereignisse mit Regelentscheidung. Für die lexikalische Analyse wird keines dieser beiden Wazuh-Protokolle als Texteingabe verwendet.
+
+\section{Lexikalische Merkmale}
+Lexikalische Merkmale beschreiben die textuelle Form eines ScriptBlocks. Zum Punktemodell gehören beispielsweise Länge, Backticks, Stringliterale, Kodierungsindikatoren und Treffer dokumentierter Tokenkategorien. Die Shannon-Entropie beschreibt die Verteilung der Zeichen \cite{shannon1948}. Ein hoher oder niedriger Wert allein belegt jedoch keine Schädlichkeit.
+
+Zeichen-\(n\)-Gramme zerlegen einen Text in überlappende Zeichenfolgen fester Länge. Term Frequency--Inverse Document Frequency (TF-IDF) gewichtet häufige Fragmente innerhalb eines Dokuments und reduziert den Einfluss von Fragmenten, die in vielen Trainingsdokumenten vorkommen \cite{salton1988}. Eine logistische Regression kann daraus eine Wahrscheinlichkeit für die positive Klasse bestimmen. Im Gegensatz zum festen Punktemodell lernt sie ihre Gewichte aus Trainingsdaten; ihre Auswertung muss deshalb die Trennung von Training und Test sicherstellen.
+\chapter{Stand der Forschung und verwandte Ansätze}
+
+Dieses Kapitel ordnet die Arbeit anhand von vier Kriterien ein: Telemetriequelle, Text- oder Code-Repräsentation, Entscheidungsverfahren und Validierungsgrundlage. Die Kriterien machen sichtbar, welche Aufgaben bestehende Ansätze lösen und welche Abgrenzung für den vorliegenden Laborvergleich gilt.
+
+\section{Regel- und signaturbasierte Erkennung}
+Regelbasierte Systeme prüfen Telemetrie auf Zeichenketten, reguläre Ausdrücke, Feldkombinationen oder Ereignisfolgen. Wazuh verwendet Decoder und XML-Regeln; Sigma beschreibt Erkennungslogik herstellerunabhängig \cite{wazuh-rules,sigmahq-powershell}. Eine Alarmmeldung lässt sich auf eine konkrete Regel zurückführen. Die Erkennung hängt jedoch von der formulierten Oberfläche ab. Kodierung oder Rekonstruktion kann ein erwartetes Muster verändern, während breite Regeln auch legitime Administration erfassen.
+
+Die vorliegende Referenzmessung übernimmt die installierten Wazuh-Regeln unverändert. Zusätzlich wird die Mindestregelstufe nachträglich variiert. Diese Sensitivitätsanalyse zeigt, wie sich der Betriebspunkt innerhalb derselben Regelbasis verschiebt, ohne daraus eine auf den Datensatz angepasste neue Regelbasis abzuleiten.
+
+\section{Lernbasierte Klassifikation von PowerShell-Code}
+Hendler, Kels und Rubin vergleichen klassische Merkmale mit zeichenbasierten neuronalen Netzen und untersuchen ein Ensemble zur Erkennung schädlicher PowerShell-Befehle \cite{hendler2018}. Rusak, Al-Dujaili und O'Reilly verwenden Strukturen des Abstract Syntax Tree (AST) als Eingabe eines tiefen Lernverfahrens \cite{rusak2018}. Rubin, Kels und Hendler analysieren über die Antimalware Scan Interface (AMSI) erfassten Code mit kontextuellen Zeichen- und Tokenrepräsentationen \cite{rubin2020}.
+
+Hung, Chen und Ma kombinieren 33 statische Text- und Verhaltensmerkmale mit XGBoost. Nach der Vorverarbeitung umfasst ihr Datensatz 8.197 Skripte aus getrennten benignen und schädlichen Quellen \cite{hung2024}. Wu et al. koppeln in MPSD die Erfassung über AMSI mit einer Bewertung durch VirusTotal. Die veröffentlichte Untersuchung verwendet 82 benigne und 218 schädliche Skripte; die externe Abfrage verursacht laut Messung im Mittel etwa 50 Sekunden Verzögerung je Analyse \cite{wu2024mpsd}. Beide Arbeiten zeigen, dass Datengrundlage, Erfassungsstelle und Betriebsziel die Vergleichbarkeit von Kennzahlen bestimmen.
+
+Die statistische Vergleichsbasis dieser Arbeit verwendet Zeichen-\(n\)-Gramm-TF-IDF mit logistischer Regression. Sie dient als algorithmische Kontrolle für das feste Punktemodell. Ihre Werte werden ausschließlich innerhalb des eigenen Datensatzes interpretiert.
+
+\section{Deobfuskation und semantische Analyse}
+Deobfuskationsverfahren versuchen, eine leichter auswertbare Darstellung wiederherzustellen. PSDEM verbindet statische und dynamische Schritte \cite{liu2018}. PowerDrive dokumentiert eine mehrstufige Analyse von PowerShell-Schadsoftware \cite{ugarte2019}. Li et al. kombinieren AST-Teilbäume, Emulation und semantische Signaturen \cite{li2019}. PowerPeeler rekonstruiert Ausführungszustände dynamisch auf Instruktionsebene und wurde 2024 auf der ACM CCS veröffentlicht \cite{li2024powerpeeler}.
+
+Diese Verfahren erfassen Syntax, Datenfluss oder Laufzeitverhalten und gehen damit über eine Textklassifikation hinaus. Sie benötigen zugleich Parser-, Emulations- oder Ausführungslogik. Das Punktemodell der vorliegenden Arbeit rekonstruiert lediglich begrenzte Zeichenketten und dekodiert geeignete Base64-Kandidaten, ohne den rekonstruierten Inhalt auszuführen.
+\section{Vergleich der Ansätze}
+Tabelle~\ref{tab:related-work} stellt ausgewählte Ansätze anhand der genannten Kriterien gegenüber. Die publizierten Kennzahlen werden nicht direkt übernommen, weil Datensätze, Klassenverteilungen und Telemetriequellen voneinander abweichen.
+
+\begin{table}[H]
+\centering
+\caption[Vergleich ausgewählter Ansätze zur PowerShell-Erkennung]{Vergleich ausgewählter Ansätze zur PowerShell-Erkennung}
+\label{tab:related-work}
+\small
+\begin{tabularx}{\textwidth}{|L{2.8cm}|L{4.5cm}|Y|}
+\hline
+\textbf{Ansatz} & \textbf{Eingabe und Verfahren} & \textbf{Abgrenzung zur vorliegenden Arbeit}\\
+\hline
+Wazuh und Sigma \cite{wazuh-rules,sigmahq-powershell} & Ereignisfelder und dokumentierte Muster. & Regelbasiert und erklärbar; Wazuh bildet die unveränderte Referenzmessung.\\
+\hline
+Hendler et al. \cite{hendler2018} & Merkmale, Zeichenmodell und Ensemble auf PowerShell-Befehlen. & Lernbasierte Gewichte und externe Datengrundlage.\\
+\hline
+Rusak et al. \cite{rusak2018} & AST-Repräsentation und tiefes Lernverfahren. & Verarbeitet Syntaxstruktur statt ausschließlich Textmerkmale.\\
+\hline
+Rubin et al. \cite{rubin2020} & AMSI-Telemetrie und kontextuelle Einbettungen. & Andere Erfassungsstelle und höhere Modellkomplexität.\\
+\hline
+Hung et al. \cite{hung2024} & 33 statische Merkmale und XGBoost auf 8.197 vorverarbeiteten Skripten. & Verwandter Merkmalsansatz, aber andere Quellen, Labels und Stichprobengröße.\\
+\hline
+Wu et al. \cite{wu2024mpsd} & AMSI-Erfassung und externe Mehrfachbewertung über VirusTotal. & Präventives Blockieren statt nachgelagerter Event-4104-Auswertung.\\
+\hline
+PSDEM, PowerDrive und Li et al. \cite{liu2018,ugarte2019,li2019} & Statische und dynamische Deobfuskation sowie semantische Signaturen. & Größere Analysetiefe als die begrenzte Textrekonstruktion.\\
+\hline
+PowerPeeler \cite{li2024powerpeeler} & Dynamische Rekonstruktion auf Instruktionsebene. & Berücksichtigt Laufzeitsemantik, die im Laborversuch nicht erfasst wird.\\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Forschungslücke und eigener Beitrag}
+Bestehende Arbeiten untersuchen regelbasierte Erkennung, statistische Klassifikation und Deobfuskation meist auf anderen Telemetriequellen oder Datensätzen. Für die konkrete Kombination aus Event-ID 4104, unveränderten Wazuh-Standardregeln, einem erklärbaren Punktemodell und einem statistischen lexikalischen Kontrollverfahren liegt damit kein direkt übertragbarer Messwert vor.
+
+Der eigene Beitrag besteht aus der Definition und sicheren Erzeugung des Datensatzes, dem getrennten lokalen und managerseitigen Telemetrienachweis, der eindeutigen Alarmzuordnung, den beiden implementierten lexikalischen Verfahren und ihrer gemeinsamen gruppierten Auswertung. Der Beitrag ist ein reproduzierbarer Laborvergleich, kein allgemein trainierter Schadsoftwareklassifikator.
+\chapter{Methodik und Versuchsdesign}
+
+Dieses Kapitel legt fest, wie die Forschungsfragen untersucht werden. Es beschreibt Anforderungen, Untersuchungseinheit, getrennte Datenpfade, Datensatz, Erkennungsverfahren und statistische Auswertung.
+
+\section{Anforderungen und Entwurfsentscheidungen}
+Tabelle~\ref{tab:requirements} leitet aus den Forschungsfragen überprüfbare Anforderungen ab. Die Nachweise verweisen auf maschinenlesbare Artefakte statt auf den bloßen Zustand einer Benutzeroberfläche.
+
+\begin{table}[H]
+\centering
+\caption[Anforderungen, Prüfkriterien und Nachweise]{Anforderungen, Prüfkriterien und Nachweise}
+\label{tab:requirements}
+\small
+\begin{tabularx}{\textwidth}{|L{3.2cm}|L{3.9cm}|Y|}
+\hline
+\textbf{Anforderung} & \textbf{Prüfkriterium} & \textbf{Umsetzung und Nachweis}\\
+\hline
+Lokale Telemetrie & Für jeden ausgeführten Testfall liegt genau ein vollständiges Event 4104 vor. & Abgleich von Ausführungslog, ID, Event-ID und \texttt{ScriptBlockText} für 300 Testfälle.\\
+\hline
+Wazuh-Transport & Auch Testfälle ohne Alarm müssen den Manager erreicht haben. & Getrennter Ausschnitt des managerseitigen Ereignisarchivs mit 300 eindeutigen IDs.\\
+\hline
+Vergleichbarkeit & Alle Verfahren verwenden dieselben Testfall-IDs und Klassenlabels. & Direkter Windows-Export für beide Lexikalverfahren; getrennte Wazuh-Alarmzuordnung über neutrale IDs.\\
+\hline
+Trennung von Training und Test & Verwandte Varianten dürfen nicht beide Datenanteile belegen. & Fünffache, nach Verhaltensfamilien gruppierte Out-of-Fold-Auswertung.\\
+\hline
+Erklärbarkeit & Entscheidungen des Punktemodells müssen prüfbar sein. & Ausgabe von Merkmalen, Punktbeiträgen, Schwellenwert und Klassifikation je Testfall.\\
+\hline
+Sicherheit & Positive Testfälle dürfen keine schädliche Wirkung entfalten. & Inerte Texte, reservierte Netzindikatoren, AST-Prüfung und eingeschränkte Befehlsliste.\\
+\hline
+Reproduzierbarkeit & Eingaben, Programme und Ergebnisse müssen eindeutig identifizierbar sein. & Feste Parameter, maschinenlesbare Ausgaben, Tests und SHA-256-Prüfsummen.\\
+\hline
+Rechenaufwand & Die isolierte Textauswertung muss messbar sein. & Laufzeitversuch mit 300, 1.500 und 3.000 Auswertungen ohne Ein-/Ausgabe und Wazuh-Verarbeitung.\\
+\hline
+\end{tabularx}
+\end{table}
+\section{Untersuchungsdesign}
+Untersuchungseinheit ist ein ausgeführter Testfall. Sein \texttt{ScriptBlockText} wird direkt aus Event-ID 4104 geladen und über eine neutrale ID dem Datensatzlabel zugeordnet. Das Label \texttt{benign} bildet die negative Klasse; \texttt{simulated\_malicious} bildet die positive Klasse. Das positive Label bezeichnet einen Testfall mit einem zuvor definierten Angriffsindikator. Es bezeichnet weder eine schädliche Wirkung noch tatsächlich ausgeführte Schadsoftware.
+
+Es werden drei Einzelverfahren bewertet. \emph{Wazuh-Standardregeln} entscheiden positiv, wenn mindestens eine Alarmmeldung der festgelegten Regelbasis eindeutig zugeordnet ist. Das \emph{lexikalische Punktemodell} entscheidet positiv, wenn sein Punktwert den ausschließlich auf der jeweiligen Trainingsteilstichprobe gewählten Schwellenwert erreicht. Die \emph{statistische Vergleichsbasis} lernt Zeichen-\(n\)-Gramm-Gewichte ausschließlich aus derselben Trainingsteilstichprobe und verwendet die feste Wahrscheinlichkeitsgrenze 0{,}5. ODER- und UND-Verknüpfung von Wazuh und Punktemodell werden ergänzend ausgewertet; sie sind keine neu trainierten Verfahren.
+
+Die fünffache Kreuzvalidierung hält alle Varianten einer Verhaltensfamilie in derselben Teilstichprobe; der grundsätzliche Einsatz von Kreuzvalidierung zur Schätzung von Modellgüte folgt Kohavi \cite{kohavi1995}. Vokabular, TF-IDF-Gewichte, Regressionsgewichte und Punktschwellenwert entstehen damit ohne Zugriff auf die jeweilige Testteilstichprobe. Eine zusätzliche Schwellenwertwahl auf allen 300 Testfällen dokumentiert nur einen festen Einsatzwert und zählt nicht als unabhängige Leistungsschätzung. Die Wazuh-Regeln bleiben unverändert; eine nachträgliche Analyse mehrerer Mindestregelstufen beschreibt lediglich alternative Betriebspunkte.
+\section{Reproduzierbarkeit und Sicherheitsanforderungen}
+Neutrale IDs von \texttt{PST-001} bis \texttt{PST-300} kodieren weder Label noch Gruppe. Der Marker \texttt{WAZUH\_SAMPLE <ID>} dient ausschließlich der Zuordnung und wird vor beiden lexikalischen Auswertungen entfernt. Versionsangaben, Parameter, Quellenstände, Ergebnisdateien und Prüfsummen dokumentieren den Messlauf.
+
+Das Ausführungsskript analysiert jeden ScriptBlock vorab mit dem abstrakten Syntaxbaum von PowerShell. Für positive Testfälle ist ausschließlich \texttt{Write-Output} als aufgerufener Befehl zugelassen. Verdächtig wirkende Befehlsfolgen bleiben Zeichenketten; Base64-Beispiele werden nur zu Text dekodiert. Externe C2-Verbindungen, Persistenzänderungen, Schutzfunktionsänderungen und das Nachladen von Nutzlasten sind ausgeschlossen.
+
+\section{Lab-Architektur}
+Der Aufbau besteht aus einem Windows-11-Host und einem Wazuh-Manager unter Kali Linux im Windows Subsystem for Linux (WSL) auf derselben physischen Maschine. Ein lokaler Erfasser liest Event-ID 4104 fortlaufend aus \path{Microsoft-Windows-PowerShell/Operational} und schreibt den vollständigen Feldwert \texttt{ScriptBlockText} in eine JSONL-Datei. Diese Datei ist die einzige Texteingabe der beiden lexikalischen Verfahren.
+
+Parallel überträgt der Wazuh-Agent denselben Ereigniskanal an den Manager. Das managerseitige Ereignisarchiv belegt den Empfang aller Testfälle; es dient nicht als lexikalische Eingabe. Nur die separat erzeugten Wazuh-Alarmmeldungen bestimmen die regelbasierte Entscheidung. Abbildung~\ref{fig:lab-architecture} zeigt diese getrennten Rollen.
+
+\diagramfigure{lab_architecture.pdf}{Laborarchitektur mit getrennten Erkennungs- und Nachweispfaden}{fig:lab-architecture}
+
+Tabelle~\ref{tab:test-environment} dokumentiert die für den Messlauf maßgeblichen Komponenten.
+\begin{table}[H]
+\centering
+\caption[Technische Testumgebung und verwendete Versionen]{Technische Testumgebung und verwendete Versionen}
+\label{tab:test-environment}
+\small
+\begin{tabularx}{\textwidth}{|L{4cm}|Y|}
+\hline
+\textbf{Komponente} & \textbf{Version beziehungsweise Ausprägung}\\
+\hline
+Windows-Testsystem & Windows 11 Home 25H2, OS-Build 26200.8737, 64-Bit auf x64-Prozessor; Gerätename \texttt{MSI}.\\
+\hline
+PowerShell & Windows PowerShell 5.1.26100.8737.\\
+\hline
+Wazuh-Agent & Wazuh Agent 4.14.4; Agent-ID 001; Name \texttt{Windows-Host}.\\
+\hline
+Wazuh-Manager & Wazuh Server 4.14.5-rc1 unter WSL Kali; installierte PowerShell-Standardregeln.\\
+\hline
+Aufbau & Windows-Agent auf dem Hostsystem und Wazuh-Manager in WSL; kein Docker-Einsatz im Messlauf.\\
+\hline
+Python-Umgebung & Python 3.13.12; NumPy 2.3.5; SciPy 1.16.3; Matplotlib 3.10.7.\\
+\hline
+Hardware & Intel Core i7-1280P und 15{,}71 GB nutzbarer Arbeitsspeicher.\\
+\hline
+Datensatz & 300 Testfälle; SHA-256 \texttt{12f6aa41...b58c4ae3}.\\
+\hline
+Messfenster & 17.07.2026, 09:35:23 bis 09:37:52 UTC.\\
+\hline
+\end{tabularx}
+\end{table}
+\section{Datensatzdesign}
+Der UTF-8-kodierte JSON-Datensatz enthält für jeden Testfall unter anderem ID, Label, Datensatzgruppe, Verhaltens- und Evaluierungsgruppe, MITRE-ATT\&CK-Einordnung, Obfuskierungsart, Referenztext, instrumentierten ScriptBlock, Sicherheitsklasse und Quellenreferenzen. Das Feld \texttt{analysis\_text} dient der Validierung und Dokumentation. Beide lexikalischen Verfahren analysieren im Bericht ausschließlich den direkt erfassten Ereignistext. ID, Szenarioname und Instrumentierung werden vor der Merkmalsextraktion entfernt.
+
+Der Datensatz ist synthetisch. Die 150 benignen Testfälle wurden im Rahmen der Arbeit aus typischen administrativen Aufgaben und gezielt schwierigen Grenzfällen zusammengestellt. Sie stammen nicht aus produktiven Unternehmensprotokollen oder einem realen externen Datensatz.
+
+Die 30 positiven Grundmuster sind direkt im Datensatzgenerator definiert. MITRE ATT\&CK, Atomic Red Team, Sigma, Living-off-the-Land Binaries and Scripts (LOLBAS), die Wazuh-Regelbasis und dokumentierte PowerShell-Muster dienen ausschließlich zur Auswahl und fachlichen Einordnung der dargestellten Techniken \cite{mitre-powershell,atomic-red-team,sigmahq-powershell,lolbas,wazuh-rules}. Es wurden keine vollständigen Skripte, Payload-Dateien, C2-Implantate oder ausführbaren Schadprogramme aus diesen Quellen importiert. Der Generator erzeugt aus jedem Grundmuster eine klare Variante sowie vier obfuskierte, inerte Varianten. Die Obfuskationskategorien orientieren sich an Invoke-Obfuscation \cite{invoke-obfuscation}. Das Quellenmanifest dokumentiert die konzeptionellen Referenzen, Abrufdaten und Repository-Stände. Es weist keine direkte Herkunft einzelner Sample-Texte nach.
+
+Abbildung~\ref{fig:dataset-construction} fasst die Konstruktion und die Rolle der Quellen zusammen.
+
+\diagramfigure{dataset_construction.pdf}{Konstruktion des synthetischen Labordatensatzes und Rolle der Quellen}{fig:dataset-construction}
+
+Die Klassen umfassen jeweils 150 Testfälle und bilden daher keine reale Prävalenz ab. Die 50 schwer abzugrenzenden benignen Fälle enthalten absichtlich lexikalisch auffällige, aber legitime Konstrukte. Insgesamt bestehen 105 Evaluierungsgruppen. Die Klassenlabels und Sicherheitsbewertungen wurden vom Verfasser anhand der Konstruktion und Quellen vergeben; eine unabhängige Zweitannotation fand nicht statt. Ebenso fehlen organisationsspezifische Skripte und ein zeitlich oder institutionell getrennter externer Datensatz. Diese Punkte begrenzen die Übertragbarkeit.
+
+Der Datensatzgenerator prüft Anzahl, eindeutige Texte, Quellenfelder, neutrale IDs und Sicherheitsmetadaten. Klassenabhängige Gerüstbestandteile werden vor der statistischen Merkmalsextraktion neutralisiert. Das Schema steht in Anhang~\ref{app:dataset}; zentrale Prüfsummen stehen in Anhang~\ref{app:reproducibility}.
+\section{Klassen und Testfälle}
+Der Datensatz umfasst 300 Testfälle mit ausgeglichener Klassenverteilung. Die positive Klasse enthält ausschließlich simulierte, nicht schädlich ausführbare Testfälle mit definierten Angriffsindikatoren. Tabelle~\ref{tab:dataset-groups} zeigt die vier Datensatzgruppen; Tabelle~\ref{tab:obfuscation-groups} gliedert die 120 obfuskierten positiven Fälle.
+
+\begin{table}[H]
+\centering
+\caption[Klassen und Gruppen des Datensatzes]{Klassen und Gruppen des Datensatzes}
+\label{tab:dataset-groups}
+\small
+\begin{tabularx}{\textwidth}{|L{3cm}|L{2.5cm}|C{1.5cm}|Y|}
+\hline
+\textbf{Gruppe} & \textbf{Label} & \textbf{Anzahl} & \textbf{Beschreibung}\\
+\hline
+Normale benigne Testfälle & \texttt{benign} & 100 & Administrative Prozess-, Dienst-, Ereignisprotokoll- und Systemabfragen.\\
+\hline
+Schwer abzugrenzende benigne Testfälle & \texttt{benign} & 50 & Legitime Skripte mit längeren Zeichenketten, internen URLs, Formatierung oder JSON-, CSV-, XML- und Base64-Verarbeitung.\\
+\hline
+Klare Indikator-Testfälle & \codebreak{simulated}{\_malicious} & 30 & Je ein nicht ausgeführtes Grundmuster aus 30 Verhaltensfamilien.\\
+\hline
+Obfuskierte Indikator-Testfälle & \codebreak{simulated}{\_malicious} & 120 & Varianten der Grundmuster aus sechs Obfuskierungskategorien.\\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption[Obfuskierungsarten im Datensatz]{Obfuskierungsarten im Datensatz}
+\label{tab:obfuscation-groups}
+\small
+\begin{tabularx}{\textwidth}{|L{4cm}|C{1.5cm}|Y|}
+\hline
+\textbf{Obfuskierungsart} & \textbf{Anzahl} & \textbf{Untersuchungsziel}\\
+\hline
+Base64-Dekodierung & 20 & Wiedergewinnung kodierter Indikatorzeichenketten.\\
+\hline
+String-Konkatenation & 20 & Erkennung aufgeteilter Tokens und Konkatenationsoperatoren.\\
+\hline
+Backticks & 20 & Umgang mit PowerShell-spezifischer Tokenunterbrechung.\\
+\hline
+Gemischte Schreibweise & 20 & Robustheit gegenüber wechselnder Groß- und Kleinschreibung.\\
+\hline
+Alias- und Befehlsrekonstruktion & 20 & Erkennung von Aliasnutzung und rekonstruierten Befehlen.\\
+\hline
+Kombinierte Obfuskation & 20 & Wirkung mehrerer gleichzeitiger Obfuskationstechniken.\\
+\hline
+\end{tabularx}
+\end{table}
+\section{Sicherheitskonzept der simulierten Testfälle}
+Netzwerkziele verwenden reservierte \texttt{.invalid}-Domänen nach RFC 2606 oder die TEST-NET-3-Adresse \texttt{203.0.113.77} nach RFC 5737 \cite{rfc2606,rfc5737}. Verdächtige Befehlsfolgen werden als Zeichenketten ausgegeben und nicht aufgerufen. Base64-Beispiele dekodieren ausschließlich zu Text. Das Ausführungsskript verlangt einen ausdrücklichen Laborparameter und bricht bei nicht zugelassenen AST-Befehlen ab.
+
+Diese Konstruktion ermöglicht die wiederholbare Untersuchung textbasierter Indikatoren. Sie bildet jedoch weder die Laufzeitsemantik realer Schadsoftware noch mehrstufige Nachladevorgänge, Umgebungsprüfungen oder adaptive Umgehung ab.
+\section{Lexikalische Merkmale und Punktmodell}
+Das Punktemodell berechnet deterministische Merkmale des direkt erfassten \texttt{ScriptBlockText}. Dazu gehören Länge, Token- und Literalanzahl, Shannon-Entropie, Zeichenklassenanteile, Base64-Kandidaten, Backticks, Konkatenations- und Formatoperatoren, auffällige Schreibweise sowie Treffer in zehn dokumentierten Indikatorkategorien. Entropie und Zeichenanteile werden ausgegeben, fließen jedoch nicht direkt in den Punktwert ein.
+
+Vor der Bewertung entfernt die Pipeline ausschließlich die neutrale Testfallinstrumentierung. Sie erzeugt danach begrenzte, nicht ausgeführte Textansichten: Backticks werden normalisiert, benachbarte Stringliterale zusammengefügt und formal gültige Base64-Kandidaten als UTF-8 oder UTF-16LE dekodiert. Der rekonstruierte Inhalt wird nie aufgerufen. Tabelle~\ref{tab:score-model} dokumentiert die Punktregeln. Ein Testfall gilt als positiv, wenn sein Punktwert mindestens den Schwellenwert \(t\) erreicht.
+
+\begin{table}[H]
+\centering
+\caption[Punktregeln des lexikalischen Detektors]{Punktregeln des lexikalischen Detektors}
+\label{tab:score-model}
+\small
+\begin{tabularx}{\textwidth}{|L{4.1cm}|Y|C{1.5cm}|}
+\hline
+\textbf{Merkmalsgruppe} & \textbf{Bedingung} & \textbf{Punkte}\\
+\hline
+Indikatorkategorien & Ausführung, Herunterladen, Netzwerk oder C2, Schutzumgehung, Persistenz, Zugriff auf Anmeldedaten oder LOLBin. & je +2\\
+\hline
+Weitere Kategorien & Datensammlung, Fernausführung oder Systemerkundung. & je +1\\
+\hline
+Mehrere Hochrisikokategorien & Treffer in mindestens zwei Hochrisikokategorien. & +2\\
+\hline
+Wiedergewonnener Indikator & Zusätzlicher Treffer nach Base64-Dekodierung oder Fragmentzusammenführung. & je +2\\
+\hline
+Obfuskationssignale & Base64-Kandidat, mindestens zwei Backticks, Stringrekonstruktion, mindestens vier kurze Literale, auffällige Schreibweise oder Format- und Zeichenkonstruktion. & je +1\\
+\hline
+Kombinierte Obfuskation & Mindestens zwei unterschiedliche Obfuskationssignale. & +2\\
+\hline
+Korrektur für Systemerkundung & Nur Systemerkundung, keine Hochrisikokategorie und kein Obfuskationssignal. & -1\\
+\hline
+\end{tabularx}
+\end{table}
+\section{Statistische lexikalische Vergleichsbasis}
+Die statistische Vergleichsbasis verarbeitet denselben de-instrumentierten Ereignistext wie das Punktemodell. Vor der Merkmalsbildung werden Groß- und Kleinschreibung vereinheitlicht, Variablennamen auf einen neutralen Platzhalter abgebildet sowie Zuweisungsoperatoren und terminale \texttt{Write-Output}-Variablenwrapper entfernt. Diese klassenneutrale Normalisierung verhindert, dass Namen aus dem Erzeugungsgerüst als Labelhinweis dienen; die zugewiesenen Zeichenketten bleiben erhalten.
+
+Aus jedem Trainingstext werden Zeichen-\(n\)-Gramme der Längen drei bis fünf gebildet. Ein Fragment muss in mindestens zwei Trainingsdokumenten vorkommen; pro Teilstichprobe werden höchstens 15.000 Fragmente verwendet. Die inverse Dokumenthäufigkeit lautet
+\[
+\operatorname{idf}(g)=\log\left(\frac{1+N}{1+\operatorname{df}(g)}\right)+1.
+\]
+Mit der Termhäufigkeit gewichtete Vektoren werden auf euklidische Länge eins normiert. Eine logistische Regression mit L2-Regularisierung \(\lambda=1\) wird mit dem Limited-memory-Broyden--Fletcher--Goldfarb--Shanno-Verfahren (L-BFGS) in höchstens 250 Iterationen angepasst. Die feste Entscheidungsgrenze beträgt 0{,}5.
+
+Vokabular, Dokumenthäufigkeiten und Modellparameter entstehen in jeder Runde ausschließlich aus 240 Trainingstestfällen. Die 60 zurückgehaltenen Fälle werden genau einmal klassifiziert. Es findet keine Hyperparameterwahl anhand der Testteilstichproben statt. Das Verfahren ist damit eine statistische Vergleichsbasis, aber kein unabhängig extern validiertes Modell.
+\section{Wazuh-Referenzmessung und Alarmzuordnung}
+Die Referenzmessung verwendet ausschließlich die installierte Datei \path{/var/ossec/ruleset/rules/0915-win-powershell_rules.xml} mit der SHA-256-Prüfsumme \texttt{b358b3c4...ac10739f}. Eigene oder angereicherte Regeln werden nicht einbezogen. Der Alarmimport begrenzt die Auswertung auf Agent \texttt{Windows-Host}, Event-ID 4104 und die PowerShell-Standardregel-IDs 91803 bis 92000.
+
+Eine Testfall-ID gilt nur dann als zugeordnet, wenn derselbe Zeichenkettenwert sowohl die führende Zuweisung an \texttt{\$sampleId} als auch den abschließenden Marker \texttt{WAZUH\_SAMPLE} enthält. Unbekannte, fehlende oder mehrere IDs führen zur Ablehnung. Der Alarmexport enthält 88 Datensätze; alle wurden eindeutig zugeordnet.
+
+Das Alarmprotokoll enthält nur Ereignisse, die eine Regel ausgelöst haben. Deshalb wurde zusätzlich ein Ausschnitt des managerseitigen Ereignisarchivs ab dem vor dem Lauf gespeicherten Zeilenstand exportiert. \texttt{verify\_manager\_receipts.py} verlangt Agent \texttt{Windows-Host}, Event-ID 4104, vollständige Instrumentierung und genau eine erwartete ID. Die Prüfung bestätigte 300 akzeptierte und 300 eindeutige IDs ohne fehlenden, doppelten oder abgelehnten Datensatz. Damit ist eine fehlende Alarmmeldung im Messfenster als negative Standardregelentscheidung interpretierbar. Der Archivexport dient ausschließlich diesem Empfangsnachweis und wird nicht von den lexikalischen Verfahren gelesen.
+\section{Evaluierungsmetriken}
+Die Konfusionsmatrix unterscheidet True Positives (\(TP\)), False Positives (\(FP\)), True Negatives (\(TN\)) und False Negatives (\(FN\)). Daraus werden die folgenden Kennzahlen berechnet:
+\[
+\begin{array}{@{}ll@{\qquad\qquad}ll@{}}
+\mathrm{Precision} & \displaystyle = \frac{TP}{TP+FP}, &
+\mathrm{Recall} & \displaystyle = \frac{TP}{TP+FN},\\[1.2em]
+F_1 & \displaystyle = 2\cdot
+\frac{\mathrm{Precision}\cdot\mathrm{Recall}}
+{\mathrm{Precision}+\mathrm{Recall}}, &
+\mathrm{FPR} & \displaystyle = \frac{FP}{FP+TN}.
+\end{array}
+\]
+Precision beschreibt den Anteil richtiger positiver Entscheidungen, Recall den Anteil erkannter positiver Testfälle und die False-Positive-Rate (FPR) den Anteil fälschlich positiver Entscheidungen innerhalb der negativen Klasse. Ergänzend werden Spezifität und Genauigkeit ausgegeben.
+
+Für Wazuh, Punktemodell und die beiden Verknüpfungen werden 95-\%-Intervalle mit 2.000 gruppenstratifizierten Bootstrap-Wiederholungen berechnet; Resampling-Einheit ist die Evaluierungsgruppe \cite{efron1979}. Die statistische Vergleichsbasis wird zusätzlich für jede der fünf Testteilstichproben ausgewiesen. Weil der Datensatz ausgeglichen ist, wird die erwartete Precision außerdem für angenommene positive Prävalenzen von 0{,}1, 1, 5 und 50 Prozent berechnet. Precision-Recall-Maße bleiben von der Klassenverteilung abhängig \cite{saito2015}.
+\section{Schwellenwertwahl und Kreuzvalidierung}
+In jeder Kreuzvalidierungsrunde wird der Schwellenwert des Punktemodells auf 240 Trainingstestfällen gewählt. Zulässig sind zunächst Werte mit einer Trainings-FPR von höchstens 0{,}10. Unter diesen wird nach F1-Score, danach Recall, niedrigerer FPR und schließlich niedrigerem Schwellenwert geordnet. Der gewählte Wert wird unverändert auf die 60 zurückgehaltenen Testfälle angewendet. Die fünf Testteilstichproben ergeben zusammen genau eine Out-of-Fold-Entscheidung je Testfall.
+
+Die gewählten Werte lauten 4, 5, 3, 4 und 6. Diese Streuung zeigt die Abhängigkeit vom jeweiligen Trainingsanteil. Auf allen 300 Testfällen ergibt dieselbe Regel den dokumentierten Einsatzwert 5; dieser Wert wird nicht zur primären Leistungsschätzung verwendet. Die FPR-Nebenbedingung gilt nur auf den Trainingsteilstichproben und garantiert keine entsprechende Test-FPR.
+
+Die statistische Vergleichsbasis verwendet dieselben fünf Gruppenzuordnungen. Sie lernt in jeder Runde ein neues Vokabular und neue Modellgewichte, behält aber die feste Entscheidungsgrenze 0{,}5. Abbildung~\ref{fig:experiment-flow} fasst Erfassung, getrennte Entscheidungen und gemeinsame Auswertung zusammen.
+
+\diagramfigure{experiment_flow.pdf}{Versuchsablauf von der Ausführung bis zur gemeinsamen Auswertung}{fig:experiment-flow}
+\chapter{Implementierung}
+
+Dieses Kapitel beschreibt die umgesetzten Komponenten und ihre Schnittstellen. Im Mittelpunkt stehen die fortlaufende Ereigniserfassung, der Wazuh-Transport, die kontrollierte Testfallausführung sowie die beiden lexikalischen Auswertungen.
+
+\section{Aktivierung und Prüfung des ScriptBlock-Loggings}
+ScriptBlock-Logging wurde über den Richtlinienpfad der Registry aktiviert. Codeblock~\ref{lst:enable-scriptblock-logging} zeigt die beiden administrativen PowerShell-Befehle.
+
+\begin{lstlisting}[language={},caption={Aktivierung des ScriptBlock-Loggings},label={lst:enable-scriptblock-logging}]
+New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging" -Force
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging" -Name EnableScriptBlockLogging -Value 1 -Type DWord
+\end{lstlisting}
+
+Die Prüfung erfolgt im Kanal \path{Microsoft-Windows-PowerShell/Operational} anhand von Event-ID 4104. Das lokale Protokoll war auf 15 MB begrenzt. Um ein Überschreiben früher Ereignisse zu vermeiden, liest \texttt{collect\_event4104.ps1} neue Datensätze fortlaufend anhand der \texttt{EventRecordID} und schreibt jeden vollständigen \texttt{ScriptBlockText} unmittelbar in eine JSONL-Datei. Nach dem Lauf prüft die Pipeline Event-ID, Instrumentierung, Anzahl, Eindeutigkeit und Textgleichheit.
+
+Abbildung~\ref{fig:scriptblock-registry} dokumentiert die Aktivierung. Abbildung~\ref{fig:event-4104-marker} zeigt einen zugehörigen Ereigniseintrag mit neutraler Testfall-ID.
+
+\screenshotplaceholder{scriptblock_logging_registry.png}{Aktivierter Registry-Wert für PowerShell ScriptBlock-Logging}{fig:scriptblock-registry}
+
+\screenshotplaceholder{event_4104_sample_marker.png}{Event-ID 4104 mit Testfall-ID im ScriptBlockText}{fig:event-4104-marker}
+\section{Wazuh-Agent und Ereigniskanal-Weiterleitung}
+Der Windows-Agent liest denselben PowerShell-Kanal. Der verwendete Abschnitt der Datei \path{C:/Program Files (x86)/ossec-agent/ossec.conf} ist in Codeblock~\ref{lst:wazuh-eventchannel} dargestellt.
+
+\begin{lstlisting}[language=XML,caption={Wazuh-Agent-Konfiguration für den PowerShell-Ereigniskanal},label={lst:wazuh-eventchannel}]
+<localfile>
+  <location>Microsoft-Windows-PowerShell/Operational</location>
+  <log_format>eventchannel</log_format>
+</localfile>
+\end{lstlisting}
+
+Nach der Konfigurationsänderung wurde der Dienst \texttt{WazuhSvc} neu gestartet. Agent 001 war während des Messfensters aktiv. Die installierte Regeldatei und die Konfiguration wurden vor dem Lauf durch Prüfsummen festgehalten; lokale Wazuh-Regeln gingen nicht in die Messung ein. Abbildung~\ref{fig:wazuh-agent-active} dient als ergänzender Konfigurationsnachweis.
+
+\screenshotplaceholder{wazuh_agent_active.png}{Aktiver Windows-Agent mit Agent-ID, Hostname und Wazuh-Version}{fig:wazuh-agent-active}
+\section{Ausführung der Datensatz-Testfälle}
+Das Skript \codebreak{run\_dataset}{\_samples.ps1} lädt den JSON-Datensatz und prüft vor jeder Ausführung Sicherheitsklasse und AST. Der Parameter \texttt{-IUnderstandThisIsALab} ist obligatorisch; \texttt{-PreflightOnly} führt ausschließlich die Vorprüfungen aus. Das Ausführungslog wird vor dem ersten Testfall auf Schreibbarkeit geprüft und danach für jeden Fall fortgeschrieben.
+
+Im Messlauf betrug der Abstand zwischen zwei Testfällen 300 Millisekunden. Jeder ScriptBlock beginnt mit der eindeutigen Zuweisung an \texttt{\$sampleId} und endet mit dem Marker \texttt{WAZUH\_SAMPLE <ID>}. Beide Bestandteile müssen für eine gültige Zuordnung vorhanden sein.
+
+\section{Managerseitiger Empfangsnachweis und Alarmexport}
+Vor dem Lauf speichert \texttt{capture\_wazuh\_offsets.py} die aktuellen Zeilenstände des managerseitigen Ereignisarchivs und des Alarmprotokolls. Zusätzlich werden Prüfsummen der Agentenkonfiguration und Regeldatei erfasst. Nach dem Lauf verarbeitet \texttt{export\_wazuh\_capture.py} ausschließlich die seit diesen Positionen hinzugekommenen Datensätze. Das Programm filtert Agent, Event-ID und vollständige Testfallinstrumentierung und erzeugt zwei getrennte Dateien: \path{manager_event4104_receipts.jsonl} für den Transportnachweis und \path{alerts_standard_rules_dataset_run.jsonl} für die regelbasierte Entscheidung.
+
+\texttt{verify\_manager\_receipts.py} prüft den Archivausschnitt auf erwartete, fehlende und doppelte IDs. Die Ergebnisdatei \path{manager_receipt_summary.json} weist 300 akzeptierte Ereignisse ohne Lücke oder Duplikat aus. Der getrennte Alarmexport enthält 88 eindeutig zugeordnete Alarmmeldungen aus dem Standardregelbereich. Abbildung~\ref{fig:wazuh-alert-sample} zeigt einen Alarm mit Regel- und Testfallbezug; Abbildung~\ref{fig:wazuh-jsonl-sample} dokumentiert die maschinenlesbare Darstellung.
+\screenshotplaceholder{wazuh_alert_sample.png}{Wazuh-Alarmmeldung mit Regel-ID, Event-ID 4104 und Testfall-ID}{fig:wazuh-alert-sample}
+
+\screenshotplaceholder{wazuh_jsonl_sample.png}{JSONL-Alarmexport mit Regelmetadaten und ScriptBlockText}{fig:wazuh-jsonl-sample}
+\section{Python-Pipeline}
+\texttt{pipeline.py} verwendet die Python-Standardbibliothek. Im Modus \texttt{run} lädt es den direkten Windows-Export aus \texttt{--event-channel-events}. Für jeden erwarteten Testfall verlangt es Event-ID 4104, vollständige Instrumentierung, eine eindeutige ID und einen mit dem ausgeführten ScriptBlock übereinstimmenden Text. Ein Rückgriff auf \texttt{analysis\_text} ist nicht zulässig. Nach Entfernung der Instrumentierung berechnet das Programm Merkmale, Punktwert und gruppierte Out-of-Fold-Entscheidungen. Wazuh-Alarme werden separat importiert und erst über die Testfall-ID mit den Ergebnissen verbunden.
+
+Abbildung~\ref{fig:windows-event-input} zeigt diesen Datenfluss und die getrennte Einbindung der Wazuh-Alarme.
+
+\diagramfigure{windows_event_channel_evidence.pdf}{Direkter Datenfluss vom Windows-Ereigniskanal zu den lexikalischen Verfahren}{fig:windows-event-input}
+
+Der folgende Aufruf reproduziert Punktemodell, Wazuh-Referenz und binäre Verknüpfungen:
+\begin{lstlisting}[language=bash,caption={Aufruf des zentralen Methodenvergleichs},label={lst:pipeline-run}]
+python3 artifacts/source/pipeline.py run \
+  --dataset artifacts/dataset/powershell_scriptblock_samples.json \
+  --event-channel-events artifacts/messlauf/local_event4104_dataset_run.jsonl \
+  --alerts artifacts/messlauf/capture/alerts_standard_rules_dataset_run.jsonl \
+  --out-dir artifacts/messlauf/analysis \
+  --evaluation-mode grouped_cv --folds 5 --seed 20260711 \
+  --bootstrap-iterations 2000 --max-fpr 0.10 \
+  --agent-name Windows-Host --event-id 4104
+\end{lstlisting}
+
+\codebreak{additional\_}{analyses.py} bildet Zeichen-\(n\)-Gramm-TF-IDF-Vektoren und wertet die logistische Regression mit gruppierten Out-of-Fold-Entscheidungen aus. NumPy stellt Vektoren bereit, SciPy optimiert die Regressionsgewichte und Matplotlib erzeugt das Ergebnisdiagramm. Der Aufruf lautet:
+\begin{lstlisting}[language=bash,caption={Aufruf der statistischen Vergleichsbasis},label={lst:baseline-run}]
+python3 scripts/additional_analyses.py \
+  --sample-results artifacts/messlauf/analysis/sample_results.csv \
+  --overall-metrics artifacts/messlauf/analysis/metrics_overall.csv \
+  --output-dir artifacts/messlauf/analysis \
+  --figure-output figures/baseline_comparison.pdf
+\end{lstlisting}
+
+Die erzeugten CSV- und JSON-Dateien enthalten Einzelentscheidungen, Merkmale, Schwellenwerte, Teilstichprobenergebnisse, Metriken und Laufzusammenfassungen. Abbildung~\ref{fig:pipeline-terminal-summary} zeigt den abgeschlossenen Hauptlauf.
+
+\screenshotplaceholder{pipeline_terminal_summary.png}{Abgeschlossener Pipeline-Lauf mit Eingaben und Ergebnisverzeichnis}{fig:pipeline-terminal-summary}
+\section{Qualitätssicherung der Artefakte}
+Vierzehn automatisierte Tests prüfen die Kernpipeline. Dazu gehören Instrumentierungsentfernung, Event-Zuordnung, falsche Event-IDs, Duplikate, Textabweichungen, Base64-Dekodierung, Fragmentzusammenführung, Gruppenzuordnung und Datensatzvalidierung. Drei weitere Tests prüfen die klassenneutrale Normalisierung und Metrikbildung der statistischen Vergleichsbasis. Drei Regressionstests prüfen Offsetgrenze, Ereignisfilter und ID-Eindeutigkeit des managerseitigen Exports. Alle 20 Tests wurden erfolgreich ausgeführt.
+
+Zusätzlich bestanden alle 300 Testfälle die AST-Vorprüfung. Der lokale Export weist 300 vollständige Ereignistexte nach, der Managerexport 300 eindeutige Empfangsbelege und der Alarmexport 88 eindeutig zugeordnete Regelalarme. Tabellen und Diagramme werden aus den erzeugten CSV-Dateien abgeleitet. Prüfsummen und Befehle stehen in Anhang~\ref{app:reproducibility}; Bildschirmaufnahmen dienen nur als ergänzende Konfigurationsnachweise.
+\chapter{Evaluation}
+
+Dieses Kapitel berichtet die Messergebnisse in der Reihenfolge der Beweiskette. Zunächst werden Vollständigkeit und Transport der Ereignisse geprüft. Danach folgen Schwellenwert, Wazuh-Regeln, statistische Vergleichsbasis, Gesamtvergleich, Teilgruppen, Fehleranalyse und Laufzeitmessung.
+
+\section{Datenbasis des Laborlaufs}
+Der Messlauf fand am 17.07.2026 von 09:35:23 bis 09:37:52 UTC statt. Das Ausführungslog enthält 300 eindeutige IDs mit dem Status \texttt{executed}. Der lokale Erfasser schrieb 300 Ereignisse mit Event-ID 4104. Es fehlen keine IDs, es existieren keine Duplikate und alle 300 \texttt{ScriptBlockText}-Werte stimmen mit den ausgeführten ScriptBlocks überein. Diese Texte bilden die Eingabe beider lexikalischer Verfahren.
+
+Der managerseitige Archivausschnitt enthält ebenfalls 300 akzeptierte Ereignisse von Agent \texttt{Windows-Host}. Alle erwarteten IDs sind genau einmal vorhanden. Damit ist der Transport zum Wazuh-Manager auch für die 212 Testfälle ohne Alarm belegt. Der getrennte Alarmexport enthält 88 Standardregel-Alarme für 88 eindeutige IDs. Alle Verfahren verwenden dieselben Klassenlabels. Die Eingabe- und Ergebnisprüfsummen sind in Anhang~\ref{app:reproducibility} dokumentiert.
+
+\section{Schwellenwertanalyse}
+Ein niedriger Schwellenwert des Punktemodells erhöht im untersuchten Datensatz den Recall und die Zahl der False Positives. Tabelle~\ref{tab:threshold-focus} zeigt den entscheidungsrelevanten Bereich der Vollstichprobe. Diese Werte dienen nur zur Dokumentation des Einsatzschwellenwerts; die primäre Leistung stammt aus den Out-of-Fold-Entscheidungen.
+
+\begin{table}[H]
+\centering
+\caption[Entscheidungsrelevanter Bereich der Schwellenwertanalyse]{Entscheidungsrelevanter Bereich der Schwellenwertanalyse}
+\label{tab:threshold-focus}
+\begingroup
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Schw.} & \textbf{TP} & \textbf{FP} & \textbf{TN} & \textbf{FN} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{FPR}\\
+\hline
+3 & 132 & 18 & 132 & 18 & 0{,}8800 & 0{,}8800 & 0{,}8800 & 0{,}1200\\
+\hline
+4 & 112 & 14 & 136 & 38 & 0{,}8889 & 0{,}7467 & 0{,}8116 & 0{,}0933\\
+\hline
+\textbf{5} & \textbf{108} & \textbf{8} & \textbf{142} & \textbf{42} & \textbf{0{,}9310} & \textbf{0{,}7200} & \textbf{0{,}8120} & \textbf{0{,}0533}\\
+\hline
+6 & 105 & 4 & 146 & 45 & 0{,}9633 & 0{,}7000 & 0{,}8108 & 0{,}0267\\
+\hline
+7 & 89 & 0 & 150 & 61 & 1{,}0000 & 0{,}5933 & 0{,}7448 & 0{,}0000\\
+\hline
+\end{tabular}
+\endgroup
+\end{table}
+
+Unter der vorab festgelegten Nebenbedingung \(\mathrm{FPR}\leq 0{,}10\) erreicht Schwellenwert 5 auf der Vollstichprobe den höchsten F1-Score. Schwellenwert 3 hat zwar einen höheren F1-Wert, überschreitet mit 0{,}1200 jedoch die FPR-Grenze. Der Abstand der F1-Werte zwischen 4, 5 und 6 beträgt höchstens 0{,}0012; daher lässt sich aus der Vollstichprobe keine allgemeingültige Grenze ableiten.
+
+Abbildung~\ref{fig:threshold-tradeoff} stellt den Verlauf der vier Kennzahlen für alle untersuchten Schwellenwerte dar.
+
+\diagramfigure{threshold_tradeoff.pdf}{Kennzahlen des Punktemodells in Abhängigkeit vom Schwellenwert}{fig:threshold-tradeoff}
+\section{Wazuh-Standardregeln}
+Die 88 Alarmmeldungen verteilen sich auf elf Standardregeln. Tabelle~\ref{tab:wazuh-rules} zeigt die vollständige Häufigkeitsverteilung.
+
+\begin{table}[H]
+\centering
+\caption[Ausgelöste Wazuh-Regeln im Alarmexport]{Ausgelöste Wazuh-Regeln im Alarmexport}
+\label{tab:wazuh-rules}
+\small
+\begin{tabularx}{\textwidth}{|L{2cm}|C{1.8cm}|Y|}
+\hline
+\textbf{Regel-ID} & \textbf{Anzahl} & \textbf{Beschreibung}\\
+\hline
+\texttt{91803} & 2 & Aufruf einer Methode zur Bildschirmaufnahme.\\
+\hline
+\texttt{91809} & 26 & Mögliche Base64-Dekodierung im PowerShell-Skript.\\
+\hline
+\texttt{91815} & 12 & Prozesserkennung durch PowerShell.\\
+\hline
+\texttt{91816} & 25 & Abfrage von Systemumgebungsvariablen.\\
+\hline
+\texttt{91819} & 4 & Suche im Dateisystem.\\
+\hline
+\texttt{91820} & 4 & Rekursive Sammlung von Dateien.\\
+\hline
+\texttt{91822} & 1 & Verwendung von \texttt{Invoke-Command} für ein Subskript.\\
+\hline
+\texttt{91823} & 2 & Fernausführung mit \texttt{Invoke-Command}.\\
+\hline
+\texttt{91824} & 1 & Sammlung von Zwischenablagedaten.\\
+\hline
+\texttt{91837} & 9 & \texttt{Get-Content -Stream} oder \texttt{Invoke-Expression}.\\
+\hline
+\texttt{91844} & 2 & Möglicher Eintrag im Autostart-Registry-Pfad.\\
+\hline
+\end{tabularx}
+\end{table}
+
+Regel \texttt{91809} erfasst Base64-Dekodierung, während die Regeln \texttt{91815}, \texttt{91816} und \texttt{91819} auch administrative Tätigkeiten beschreiben. Tabelle~\ref{tab:wazuh-levels} zeigt die Wirkung einer nachträglichen Mindestregelstufe. Ab Stufe 5 sinkt die FPR von 0{,}2267 auf 0{,}0267; zugleich sinkt der Recall von 0{,}3600 auf 0{,}1933. Die Hauptauswertung verwendet alle exportierten PowerShell-Alarme ab Stufe 3.
+
+\begin{table}[H]
+\centering
+\caption[Sensitivität gegenüber der Wazuh-Mindestregelstufe]{Sensitivität gegenüber der Wazuh-Mindestregelstufe}
+\label{tab:wazuh-levels}
+\small
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Stufe} & \textbf{TP} & \textbf{FP} & \textbf{TN} & \textbf{FN} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{FPR}\\
+\hline
+3 & 54 & 34 & 116 & 96 & 0{,}6136 & 0{,}3600 & 0{,}4538 & 0{,}2267\\
+\hline
+5 & 29 & 4 & 146 & 121 & 0{,}8788 & 0{,}1933 & 0{,}3169 & 0{,}0267\\
+\hline
+12 & 7 & 0 & 150 & 143 & 1{,}0000 & 0{,}0467 & 0{,}0892 & 0{,}0000\\
+\hline
+\end{tabular}
+\end{table}
+\section{Statistische lexikalische Vergleichsbasis}
+Die Zeichen-\(n\)-Gramm-Vergleichsbasis erzeugt für alle 300 Testfälle Out-of-Fold-Entscheidungen. Insgesamt entstehen 135 True Positives, 14 False Positives, 136 True Negatives und 15 False Negatives. Daraus folgen eine Precision von 0{,}9060, ein Recall von 0{,}9000, ein F1-Score von 0{,}9030 und eine FPR von 0{,}0933.
+
+Tabelle~\ref{tab:baseline-folds} zeigt die fünf Testteilstichproben. Ihr F1-Score liegt zwischen 0{,}8421 und 0{,}9836; die FPR liegt zwischen 0{,}0333 und 0{,}1667. Alle fünf Optimierungsläufe konvergierten nach 19 oder 20 Iterationen. Die trainierten Vokabulare enthalten zwischen 13.038 und 13.528 Zeichenfragmente.
+
+\begin{table}[H]
+\centering
+\caption[Out-of-Fold-Ergebnisse der statistischen Vergleichsbasis]{Out-of-Fold-Ergebnisse der statistischen Vergleichsbasis}
+\label{tab:baseline-folds}
+\small
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+\textbf{Teil} & \textbf{TP} & \textbf{FP} & \textbf{TN} & \textbf{FN} & \textbf{F1} & \textbf{FPR}\\
+\hline
+0 & 30 & 1 & 29 & 0 & 0{,}9836 & 0{,}0333\\
+\hline
+1 & 24 & 3 & 27 & 6 & 0{,}8421 & 0{,}1000\\
+\hline
+2 & 30 & 5 & 25 & 0 & 0{,}9231 & 0{,}1667\\
+\hline
+3 & 26 & 4 & 26 & 4 & 0{,}8667 & 0{,}1333\\
+\hline
+4 & 25 & 1 & 29 & 5 & 0{,}8929 & 0{,}0333\\
+\hline
+\end{tabular}
+\end{table}
+
+Das Ergebnis liegt über dem festen Punktemodell, belegt jedoch keine allgemeine Überlegenheit. Beide Lexikalverfahren wurden auf demselben, vom Verfasser konstruierten Datensatz entwickelt und geprüft. Die gruppierte Kreuzvalidierung verhindert das Aufteilen einer Verhaltensfamilie, ersetzt aber keinen unabhängigen externen Testdatensatz.
+\section{Gesamtvergleich der Erkennungsverfahren}
+Tabelle~\ref{tab:overall-comparison} enthält die fünf untersuchten Entscheidungen. Abbildung~\ref{fig:baseline-comparison} vergleicht die drei Einzelverfahren. Die statistische Vergleichsbasis erreicht im Datensatz mit 0{,}9030 den höchsten F1-Score. Das Punktemodell folgt mit 0{,}8100. Die unveränderten Wazuh-Standardregeln erreichen 0{,}4538.
+
+\diagramfigure{baseline_comparison.pdf}{Vergleich der drei Einzelverfahren}{fig:baseline-comparison}
+
+\begin{table}[H]
+\centering
+\caption[Gesamtvergleich der Entscheidungen für 300 Testfälle]{Gesamtvergleich der Entscheidungen für 300 Testfälle}
+\label{tab:overall-comparison}
+\begingroup
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{|L{4cm}|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Methode} & \textbf{TP} & \textbf{FP} & \textbf{TN} & \textbf{FN} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{FPR}\\
+\hline
+Wazuh-Standardregeln & 54 & 34 & 116 & 96 & 0{,}6136 & 0{,}3600 & 0{,}4538 & 0{,}2267\\
+\hline
+Lexikalisches Punktemodell & 113 & 16 & 134 & 37 & 0{,}8760 & 0{,}7533 & 0{,}8100 & 0{,}1067\\
+\hline
+Zeichen-\(n\)-Gramm-TF-IDF & 135 & 14 & 136 & 15 & 0{,}9060 & 0{,}9000 & 0{,}9030 & 0{,}0933\\
+\hline
+ODER: Wazuh/Punktemodell & 127 & 42 & 108 & 23 & 0{,}7515 & 0{,}8467 & 0{,}7962 & 0{,}2800\\
+\hline
+UND: Wazuh/Punktemodell & 40 & 8 & 142 & 110 & 0{,}8333 & 0{,}2667 & 0{,}4040 & 0{,}0533\\
+\hline
+\end{tabular}
+\endgroup
+\end{table}
+Gegenüber Wazuh erhöht das Punktemodell den Recall um 0{,}3933 und senkt die FPR um 0{,}1200. Der F1-Unterschied von 0{,}3563 besitzt im gruppenstratifizierten Bootstrap ein 95-\%-Intervall von 0{,}2400 bis 0{,}4868. Das Intervall der FPR-Differenz reicht von \(-0{,}2267\) bis \(-0{,}0263\). Abbildung~\ref{fig:bootstrap-ci} zeigt die Intervalle der absoluten Werte.
+
+\diagramfigure{bootstrap_confidence_intervals.pdf}{Gruppenstratifizierte Bootstrap-Intervalle für F1-Score und FPR}{fig:bootstrap-ci}
+
+Die ODER-Verknüpfung steigert den Recall gegenüber dem Punktemodell um 0{,}0933, erhöht die FPR jedoch um 0{,}1733. Ihr F1-Unterschied beträgt \(-0{,}0138\); das 95-\%-Intervall von \(-0{,}0619\) bis 0{,}0379 schließt null ein. Die UND-Verknüpfung erreicht eine FPR von 0{,}0533, erkennt aber nur 40 der 150 positiven Fälle.
+
+Der Vergleich behandelt Wazuh als unveränderte Referenz, während beide lexikalischen Verfahren auf Trainingsteilstichproben angepasst werden. Die Wazuh-Stufenanalyse zeigt alternative Regelbetriebspunkte, ersetzt jedoch keine gesondert entwickelte und validierte Regelbasis. Die Tabelle vergleicht daher die dokumentierten Konfigurationen im Labor und keine allgemein optimierten Produkte.
+\section{Gruppierte Kreuzvalidierung}
+\label{sec:grouped-cv}
+Tabelle~\ref{tab:cv-results} zeigt das Punktemodell in den fünf Testteilstichproben. Jede Teilstichprobe enthält 30 positive und 30 negative Testfälle. Der F1-Score liegt zwischen 0{,}6667 und 0{,}8667. Teilstichprobe 2 erreicht trotz der FPR-Bedingung im Training im Test eine FPR von 0{,}2000.
+
+\begin{table}[H]
+\centering
+\caption[Out-of-Fold-Ergebnisse des Punktemodells]{Out-of-Fold-Ergebnisse des Punktemodells}
+\label{tab:cv-results}
+\small
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Teil} & \textbf{Schw.} & \textbf{TP} & \textbf{FP} & \textbf{TN} & \textbf{FN} & \textbf{Rec.} & \textbf{F1} & \textbf{FPR}\\
+\hline
+0 & 4 & 26 & 4 & 26 & 4 & 0{,}8667 & 0{,}8667 & 0{,}1333\\
+\hline
+1 & 5 & 22 & 2 & 28 & 8 & 0{,}7333 & 0{,}8148 & 0{,}0667\\
+\hline
+2 & 3 & 27 & 6 & 24 & 3 & 0{,}9000 & 0{,}8571 & 0{,}2000\\
+\hline
+3 & 4 & 22 & 2 & 28 & 8 & 0{,}7333 & 0{,}8148 & 0{,}0667\\
+\hline
+4 & 6 & 16 & 2 & 28 & 14 & 0{,}5333 & 0{,}6667 & 0{,}0667\\
+\hline
+\end{tabular}
+\end{table}
+
+Zusammengeführt entstehen 113 True Positives und 16 False Positives. Auch die statistische Vergleichsbasis schwankt zwischen den Teilstichproben, erreicht jedoch in jeder Teilstichprobe einen F1-Score von mindestens 0{,}8421. Beide Auswertungen reduzieren die direkte Überschneidung verwandter Varianten, können aber weiterhin durch die Konstruktion des gemeinsamen Datensatzes beeinflusst sein.
+\section{Auswertung nach Obfuskierungsart}
+Innerhalb der ausschließlich positiven Obfuskierungsgruppen ist Recall die geeignete Kennzahl. Abbildung~\ref{fig:obfuscation-recall} vergleicht Wazuh und Punktemodell; Tabelle~\ref{tab:obfuscation-recall} ergänzt die statistische Vergleichsbasis.
+
+\diagramfigure{obfuscation_recall.pdf}{Recall von Wazuh und Punktemodell nach Obfuskierungsart}{fig:obfuscation-recall}
+
+\begin{table}[H]
+\centering
+\caption[Recall der 120 obfuskierten Testfälle]{Recall der 120 obfuskierten Testfälle}
+\label{tab:obfuscation-recall}
+\small
+\begin{tabularx}{\textwidth}{|Y|C{1.2cm}|C{1.8cm}|C{2.8cm}|C{2.5cm}|}
+\hline
+\textbf{Obfuskierungsart} & \textbf{n} & \textbf{Wazuh} & \textbf{Punktemodell} & \textbf{Zeichen-\(n\)-Gramm}\\
+\hline
+Base64 & 20 & 1{,}0000 & 1{,}0000 & 1{,}0000\\
+\hline
+String-Konkatenation & 20 & 0{,}1500 & 0{,}9500 & 1{,}0000\\
+\hline
+Backticks & 20 & 0{,}2500 & 0{,}6000 & 0{,}7500\\
+\hline
+Gemischte Schreibweise & 20 & 0{,}4500 & 0{,}5500 & 0{,}8500\\
+\hline
+Alias- und Befehlsrekonstruktion & 20 & 0{,}1000 & 1{,}0000 & 1{,}0000\\
+\hline
+Kombinierte Obfuskation & 20 & 0{,}1000 & 0{,}9500 & 1{,}0000\\
+\hline
+\end{tabularx}
+\end{table}
+
+Alle drei Verfahren erkennen die 20 Base64-Fälle. Wazuh erreicht bei den übrigen Kategorien zwischen 0{,}1000 und 0{,}4500 Recall. Das Punktemodell erreicht 0{,}5500 bis 1{,}0000, die statistische Vergleichsbasis 0{,}7500 bis 1{,}0000. Backticks und gemischte Schreibweise weisen bei beiden Lexikalverfahren die niedrigsten Werte auf. Über die 120 obfuskierten Fälle erkennt Wazuh 41, das Punktemodell 101 und die statistische Vergleichsbasis 112.
+\section{Bewertung der False Positives}
+Tabelle~\ref{tab:false-positives} trennt normale und schwer abzugrenzende benigne Testfälle. Angegeben werden jeweils Anzahl der False Positives und gruppenspezifische FPR.
+
+\begin{table}[H]
+\centering
+\caption[False Positives nach benigner Datensatzgruppe]{False Positives nach benigner Datensatzgruppe}
+\label{tab:false-positives}
+\small
+\begin{tabularx}{\textwidth}{|Y|C{1.0cm}|C{2.4cm}|C{2.4cm}|C{2.6cm}|}
+\hline
+\textbf{Benigne Gruppe} & \textbf{n} & \textbf{Wazuh FP / FPR} & \textbf{Punkt FP / FPR} & \textbf{Zeichen-\(n\)-Gramm FP / FPR}\\
+\hline
+Normale Administration & 100 & 24 / 0{,}2400 & 2 / 0{,}0200 & 5 / 0{,}0500\\
+\hline
+Schwer abzugrenzende Fälle & 50 & 10 / 0{,}2000 & 14 / 0{,}2800 & 9 / 0{,}1800\\
+\hline
+Gesamt & 150 & 34 / 0{,}2267 & 16 / 0{,}1067 & 14 / 0{,}0933\\
+\hline
+\end{tabularx}
+\end{table}
+
+Wazuh alarmiert 24 normale Verwaltungsfälle. Beim Punktemodell stammen 14 von 16 Fehlalarmen aus der absichtlich anspruchsvolleren benignen Gruppe. Die statistische Vergleichsbasis verteilt ihre 14 Fehlalarme auf fünf normale und neun schwer abzugrenzende Fälle. Die separate benigne Gruppe verhindert, dass nur unauffällige Verwaltungsbefehle die FPR bestimmen.
+Die beobachtete Precision beruht auf 50 Prozent positiven Fällen. Tabelle~\ref{tab:prevalence-precision} überträgt die gemessenen Recall- und FPR-Werte rechnerisch auf vier angenommene Prävalenzen. Diese Rechnung setzt unveränderte bedingte Fehlerraten voraus und ist keine Messung in einer Organisation.
+
+\begin{table}[H]
+\centering
+\caption[Erwartete Precision bei angenommener positiver Prävalenz]{Erwartete Precision bei angenommener positiver Prävalenz}
+\label{tab:prevalence-precision}
+\small
+\begin{tabular}{|L{4.6cm}|c|c|c|c|}
+\hline
+\textbf{Methode} & \textbf{0{,}1\,\%} & \textbf{1\,\%} & \textbf{5\,\%} & \textbf{50\,\%}\\
+\hline
+Wazuh-Standardregeln & 0{,}0016 & 0{,}0158 & 0{,}0771 & 0{,}6136\\
+\hline
+Lexikalisches Punktemodell & 0{,}0070 & 0{,}0666 & 0{,}2710 & 0{,}8760\\
+\hline
+Zeichen-\(n\)-Gramm-TF-IDF & 0{,}0096 & 0{,}0888 & 0{,}3367 & 0{,}9060\\
+\hline
+ODER: Wazuh/Punktemodell & 0{,}0030 & 0{,}0296 & 0{,}1373 & 0{,}7515\\
+\hline
+UND: Wazuh/Punktemodell & 0{,}0050 & 0{,}0481 & 0{,}2083 & 0{,}8333\\
+\hline
+\end{tabular}
+\end{table}
+
+Bei einer angenommenen Prävalenz von 0{,}1 Prozent liegt die erwartete Precision aller Entscheidungen unter 0{,}01. Dieser rechnerische Befund begrenzt die betriebliche Aussage der auf dem ausgeglichenen Datensatz beobachteten Precision.
+\section{Qualitative Fehleranalyse}
+Tabelle~\ref{tab:qualitative-errors} ergänzt die Kennzahlen durch vier Testfälle. Die Auswahl veranschaulicht unterschiedliche Ursachen und stellt keine zusätzliche Leistungsschätzung dar.
+
+\begin{table}[H]
+\centering
+\caption[Repräsentative Einzelentscheidungen der drei Verfahren]{Repräsentative Einzelentscheidungen der drei Verfahren}
+\label{tab:qualitative-errors}
+\small
+\begin{tabularx}{\textwidth}{|L{1.6cm}|L{4.0cm}|L{3.5cm}|Y|}
+\hline
+\textbf{ID} & \textbf{Klasse und Entscheidungen} & \textbf{Beobachtung} & \textbf{Einordnung}\\
+\hline
+\texttt{PST-013} & Benigne; Wazuh FP, Punkt TN, statistisch TN. & Wazuh-Regel 91816; Punktwert 0. & Eine Umgebungsabfrage erfüllt das Regelmuster, enthält aber keine weiteren lexikalischen Risikosignale.\\
+\hline
+\texttt{PST-021} & Schwer benign; Wazuh TN, Punkt FP, statistisch FP. & Rekonstruktion von Zeichenketten und kodiert wirkender Dateipfad. & Die Textform ähnelt den positiven Obfuskationsmustern, obwohl der Zweck benign ist.\\
+\hline
+\texttt{PST-001} & Positiv; Wazuh FN, Punkt TP, statistisch TP. & Rekonstruierter Netzwerkindikator und mehrere Obfuskationssignale. & Beide Lexikalverfahren gewinnen aus den Fragmenten verwertbare Muster.\\
+\hline
+\texttt{PST-032} & Positiv; Wazuh FN, Punkt FN, statistisch TP. & Gemischte Schreibweise; Punktwert unter dem teilstichprobenspezifischen Schwellenwert. & Die Zeichenfragmente tragen zur statistischen Entscheidung bei, obwohl die festen Punktregeln nicht ausreichen.\\
+\hline
+\end{tabularx}
+\end{table}
+\section{Laufzeit des Punktemodells}
+Der Laufzeitversuch misst ausschließlich \texttt{extract\_features} und \texttt{lexical\_score} in einem Python-Prozess. Die 300 de-instrumentierten Ereignistexte werden für größere Durchläufe zyklisch wiederholt. Ereigniserfassung, JSON-Verarbeitung, Wazuh, Datei- und Netzwerkzugriffe sind ausgeschlossen. Tabelle~\ref{tab:runtime} und Abbildung~\ref{fig:lexical-runtime} zeigen die Ergebnisse auf der in Tabelle~\ref{tab:test-environment} beschriebenen Hardware.
+
+\begin{table}[H]
+\centering
+\caption[Laufzeitmessung der Merkmalsextraktion und Punktbewertung]{Laufzeitmessung der Merkmalsextraktion und Punktbewertung}
+\label{tab:runtime}
+\small
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+\textbf{Anzahl} & \textbf{pro s} & \textbf{Median ms} & \textbf{P95 ms} & \textbf{P99 ms} & \textbf{Spitze MiB}\\
+\hline
+300 & 601{,}16 & 1{,}5908 & 2{,}3498 & 2{,}5117 & 0{,}091\\
+\hline
+1.500 & 579{,}55 & 1{,}6413 & 2{,}4024 & 2{,}7794 & 0{,}128\\
+\hline
+3.000 & 571{,}50 & 1{,}6666 & 2{,}4789 & 2{,}9405 & 0{,}175\\
+\hline
+\end{tabular}
+\end{table}
+
+\diagramfigure{lexical_runtime.pdf}{Durchsatz und Latenz des Punktemodells in der isolierten Laufzeitmessung}{fig:lexical-runtime}
+
+Bei 300 Auswertungen beträgt die mittlere Latenz 1{,}6610 Millisekunden und der Durchsatz 601{,}16 ScriptBlocks pro Sekunde. Bei 3.000 Auswertungen sinkt der gemessene Durchsatz auf 571{,}50 pro Sekunde. Der Versuch beschreibt nur die Rechenkosten des Punktemodells; er ist kein vollständiger Belastungstest vom Ereigniseingang bis zur Ausgabe.
+\chapter{Diskussion}
+\label{chap:discussion}
+
+Dieses Kapitel ordnet die Messergebnisse in Bezug auf die Forschungsfragen ein. Es trennt Aussagen, die durch den Laborlauf gestützt werden, von Grenzen, die eine Übertragung auf andere Daten oder Systeme verhindern.
+
+\section{Interpretation der Ergebnisse}
+Die drei Einzelverfahren zeigen im Datensatz unterschiedliche Fehlerprofile. Wazuh erkennt 54 der 150 positiven Fälle und erzeugt 34 Fehlalarme. Das Punktemodell erkennt 113 positive Fälle bei 16 Fehlalarmen. Die statistische Vergleichsbasis erkennt 135 positive Fälle bei 14 Fehlalarmen. Ihr F1-Score von 0{,}9030 ist der höchste beobachtete Einzelwert. Die Schwankung über die fünf Teilstichproben zeigt jedoch, dass auch dieses Ergebnis vom Datenanteil abhängt.
+
+Aus den Kennzahlen folgt nicht, dass ein Lexikalverfahren Wazuh allgemein ersetzt. Wazuh wertet Regeln und Ereigniskontext aus; die beiden anderen Verfahren klassifizieren ausschließlich den ScriptBlock-Text. Das Punktemodell wurde auf Erklärbarkeit ausgelegt, während die logistische Regression Gewichte aus dem Datensatz lernt. Der Vergleich beschreibt daher ergänzende Eigenschaften im festgelegten Labor.
+
+\section{Einordnung der Wazuh-Referenzmessung}
+Wazuh erkennt alle Base64-Fälle, weil Regel \texttt{91809} direkt auf das Dekodierungsmuster reagiert. Bei String-Konkatenation, Alias- und Befehlsrekonstruktion sowie kombinierter Obfuskation liegt der Recall dagegen bei höchstens 0{,}1500. Diese Transformationen verändern die Oberfläche, auf die feste Regeln reagieren.
+
+Die 34 Fehlalarme betreffen vor allem Prozess-, Umgebungs- und Dateisystemabfragen. Solche Aktivitäten können Teil eines Angriffs sein, treten aber auch in der Administration auf. Die Mindestregelstufe verschiebt den Betriebspunkt: Stufe 5 reduziert die FPR auf 0{,}0267, senkt den Recall jedoch auf 0{,}1933. Eine betriebliche Priorisierung müsste zusätzlich Regeltyp, Benutzerrolle, Host und Prozesskette berücksichtigen.
+
+\section{Nutzen und Grenzen der lexikalischen Verfahren}
+Das Punktemodell macht für jeden Testfall sichtbar, welche Kategorien und Obfuskationssignale zum Ergebnis beitragen. Begrenzte Stringrekonstruktion und Base64-Dekodierung erklären seinen Vorteil bei fragmentierten Indikatoren. Die statistische Vergleichsbasis erfasst wiederkehrende Zeichenfragmente auch dann, wenn keine feste Punktregel auslöst. Das zeigt sich bei \texttt{PST-032} und im Recall der Backtick- und Mischschreibweisefälle.
+
+Beide Verfahren analysieren nur Text. Ein hoher Punktwert oder eine hohe Modellwahrscheinlichkeit belegt keine schädliche Absicht. Legitimes Formatieren, kodierte Konfiguration und komplexe Verwaltungszeichenketten können ähnliche Muster erzeugen. Umgekehrt kann ein kurzer schädlicher Befehl ohne bekannte textuelle Form unauffällig bleiben. AST, Datenfluss, Eltern- und Kindprozesse, Benutzerkontext und Laufzeitwirkung sind keine Detektionsmerkmale.
+
+Die ODER-Verknüpfung übernimmt Fehlalarme beider Eingangssignale; die UND-Verknüpfung verwirft zahlreiche positive Fälle. Eine weiterführende Fusion müsste Regel-ID, Wazuh-Stufe, Punktwert und Modellwahrscheinlichkeit gewichten. Eine solche Fusion wurde nicht auf dem vorliegenden Datensatz nachträglich angepasst, weil dafür ein getrennter Validierungsdatensatz erforderlich wäre.
+\section{Interne Validität}
+\label{sec:internal-validity}
+Der lokale Export bestätigt für alle 300 IDs Event-ID und exakten \texttt{ScriptBlockText}. Der managerseitige Archivausschnitt bestätigt zusätzlich den Eingang aller 300 IDs bei Wazuh. Damit ist ein Weiterleitungsverlust bei den 212 Fällen ohne Alarm für diesen Messlauf ausgeschlossen. Die 88 Alarmmeldungen wurden ebenfalls eindeutig zugeordnet.
+
+Die gruppierte Kreuzvalidierung hält Varianten derselben Verhaltensfamilie zusammen. Beim statistischen Verfahren entstehen Vokabular, Gewichtung und Modell nur aus den jeweiligen Trainingsdaten. Klassenabhängige Namen und Ausgabewrapper des Erzeugungsgerüsts werden vorab neutralisiert. Dennoch wurden Datensatz, Labels, Punktregeln und Vorverarbeitung innerhalb derselben Arbeit entwickelt. Dadurch bleibt ein Risiko, dass beide Lexikalverfahren Besonderheiten des Korpus nutzen. Eine unabhängige Zweitannotation und ein externer Testdatensatz fehlen.
+
+Die drei Verfahren wurden unterschiedlich vorbereitet. Wazuh bleibt unverändert. Das Punktemodell wählt seinen Schwellenwert auf den Trainingsteilstichproben, während die logistische Regression aus diesen Daten lernt. Die Wazuh-Stufenanalyse zeigt zusätzliche Betriebspunkte, ersetzt aber keine getrennt entwickelte Regelvariante. Außerdem zählt jede Wazuh-Alarmmeldung unabhängig von Regelinhalt als positive Entscheidung.
+
+\section{Übertragbarkeit und Grenzen der Messung}
+Der Datensatz enthält 300 ausgeglichene und sicher konstruierte Testfälle. Die positiven Fälle bilden textuelle Formen dokumentierter Verhaltensmuster ab. Sie enthalten jedoch weder vollständige reale Payloads noch die Laufzeitwirkung von Schadsoftware. Organisationsspezifische Skripte, zeitliche Veränderungen und eine realistische niedrige Prävalenz fehlen. Die Rechnung in Tabelle~\ref{tab:prevalence-precision} zeigt, dass die erwartete Precision bei 0{,}1 Prozent positiver Prävalenz für alle Entscheidungen unter 0{,}01 liegt.
+
+Der Versuch verwendet einen Windows-11-Host, Windows PowerShell 5.1, eine Wazuh-Agent- und Managerkonfiguration sowie ausschließlich Event-ID 4104. Aussagen zu PowerShell 7, anderen Betriebssystemständen, Wazuh-Versionen oder mehreren Hosts benötigen weitere Messungen. Event-ID 4104 enthält Skripttext, aber keinen vollständigen Prozess-, Benutzer- oder Netzwerkkontext. Der Laufzeitversuch misst nur Merkmalsextraktion und Punktbewertung; Erfassung, Speicherung und Alarmierung sind nicht enthalten.
+
+\section{Herausforderungen während der Umsetzung}
+Das auf 15 MB begrenzte lokale PowerShell-Protokoll konnte frühe Ereignisse überschreiben. Die fortlaufende Erfassung anhand der \texttt{EventRecordID} verhinderte dies im Messlauf. Für die Wazuh-Bewertung reichte der Alarmexport allein nicht aus, weil er negative Regelentscheidungen nicht belegt. Der zusätzliche, strikt abgegrenzte Archivausschnitt schloss diese Nachweislücke.
+
+Auch die Testfallzuordnung erforderte eine eindeutige Instrumentierung. Eine ID wird nur akzeptiert, wenn führende Zuweisung und abschließender Marker im selben Feld vorkommen. Diese Bedingung verhindert, dass eine bloße Erwähnung einer bekannten ID als Treffer gilt. Datenerfassung, Wazuh-Nachweis und lexikalische Analyse bleiben dabei getrennte Schritte.
+
+\section{Praktische Konsequenzen}
+Im untersuchten Labor liefern lexikalische Merkmale zusätzliche Hinweise zu obfuskierten ScriptBlocks. Vor einem betrieblichen Einsatz müssten sie jedoch mit organisationsspezifischen benignen Daten, niedriger Prävalenz und einem zeitlich getrennten Testbestand geprüft werden. Ein Alarm sollte neben dem Textsignal Prozessstartdaten, Benutzer- und Hostrolle, Sysmon-Ereignisse und Netzwerkmetadaten berücksichtigen.
+
+Die Wazuh-Standardregeln bleiben als nachvollziehbare Referenz nützlich. Anpassungen sollten in einer gesonderten Regelvariante dokumentiert und gegen dieselben unabhängigen Testdaten bewertet werden. Das Punktemodell kann dabei ein erklärbares Zusatzsignal liefern; die statistische Vergleichsbasis zeigt, welchen weiteren Gewinn ein trainiertes Textmodell im Labor erreicht.
+\chapter{Fazit und Ausblick}
+
+Dieses Kapitel fasst die Ergebnisse zusammen, beantwortet die Forschungsfragen und bewertet die Zielerreichung. Der Ausblick benennt Arbeiten, die für eine belastbarere Übertragung erforderlich sind.
+
+\section{Zusammenfassung}
+Die Arbeit realisiert einen kontrollierten Vergleich zur Erkennung obfuskierter PowerShell-ScriptBlocks. Alle 300 Testfälle wurden direkt aus Event-ID 4104 erfasst und textlich geprüft. Ein getrennter managerseitiger Nachweis bestätigt den Wazuh-Empfang aller 300 IDs. Der Alarmexport enthält 88 eindeutig zugeordnete Standardregel-Alarme.
+
+Wazuh erreicht einen F1-Score von 0{,}4538 bei 0{,}2267 FPR. Das erklärbare Punktemodell erreicht 0{,}8100 bei 0{,}1067 FPR. Die statistische Zeichen-\(n\)-Gramm-Vergleichsbasis erreicht 0{,}9030 bei 0{,}0933 FPR. Alle lexikalischen Ergebnisse stammen aus nach Verhaltensfamilien gruppierten Out-of-Fold-Entscheidungen. Das Punktemodell verarbeitet in der isolierten Laufzeitmessung bei 300 Auswertungen 601{,}16 ScriptBlocks pro Sekunde. Diese Werte gelten nur für den untersuchten Datensatz und die beschriebene Umgebung.
+\section{Beantwortung der Forschungsfragen}
+\textbf{F1: Welche obfuskierten Testfälle lösen eine Wazuh-Standardregel aus?} Wazuh erkennt alle 20 Base64-Fälle. Der Recall beträgt 0{,}1500 für String-Konkatenation, 0{,}2500 für Backticks, 0{,}4500 für gemischte Schreibweise und jeweils 0{,}1000 für Alias- und Befehlsrekonstruktion sowie kombinierte Obfuskation. Insgesamt erkennt Wazuh 41 der 120 obfuskierten Fälle.
+
+\textbf{F2: Welche Merkmale tragen zum Punktemodell bei?} Indikatorkategorien, wiedergewonnene Fragmente und mehrere gleichzeitige Obfuskationssignale liefern die höchsten Punktbeiträge. Base64-Dekodierung und Stringzusammenführung machen zuvor getrennte Indikatoren sichtbar. Entropie und Zeichenanteile werden ausgegeben, aber nicht direkt gewichtet.
+
+\textbf{F3: Wie unterscheiden sich die beiden Lexikalverfahren?} Das Punktemodell erreicht 113 True Positives und 16 False Positives; jede Entscheidung lässt sich auf feste Regeln zurückführen. Die statistische Vergleichsbasis erreicht 135 True Positives und 14 False Positives. Sie erzielt den höheren F1-Score, ihre gelernten Zeichenfragmentgewichte sind jedoch weniger direkt fachlich interpretierbar.
+
+\textbf{F4: Wie wirken ODER- und UND-Verknüpfung?} ODER erhöht den Recall gegenüber dem Punktemodell von 0{,}7533 auf 0{,}8467, erhöht aber die FPR von 0{,}1067 auf 0{,}2800. UND senkt die FPR auf 0{,}0533 und den Recall auf 0{,}2667. Keine der beiden Verknüpfungen erhöht den F1-Score gegenüber dem Punktemodell.
+
+\textbf{F5: Wo entstehen Fehlentscheidungen?} Wazuh erzeugt 24 seiner 34 Fehlalarme bei normaler Administration. Beim Punktemodell stammen 14 von 16 Fehlalarmen aus den schwer abzugrenzenden benignen Fällen. Die statistische Vergleichsbasis erzeugt dort 9 ihrer 14 Fehlalarme. Backticks und gemischte Schreibweise weisen bei beiden Lexikalverfahren den niedrigsten Recall unter den sechs Obfuskierungsgruppen auf.
+\section{Bewertung der Zielerreichung}
+Die sechs Ziele aus Kapitel 1 wurden für den festgelegten Laborrahmen umgesetzt. ScriptBlock-Logging und Wazuh wurden eingerichtet. Der synthetische Datensatz wurde aus lokal definierten Testfällen erzeugt und sicher ausgeführt. Der lokale und der managerseitige Telemetrienachweis sind vollständig. Die unveränderte Wazuh-Regelbasis, das Punktemodell und die statistische Vergleichsbasis wurden mit denselben Testfällen ausgewertet. Metriken, Prävalenzrechnung, Teilgruppenanalyse, Tests, Laufzeitmessung und Prüfsummen liegen als Artefakte vor.
+
+Nicht erreicht und nicht beansprucht wird eine allgemeine oder betriebliche Validierung. Dafür fehlen unabhängige Daten, Zweitlabels, mehrere Systeme und ein vollständiger Belastungstest vom Ereigniseingang bis zur Ausgabe.
+
+\section{Ausblick}
+Eine weitere Untersuchung sollte einen zeitlich und organisatorisch getrennten Datensatz verwenden. Benigne Daten sollten mehrere Rollen und längere Betriebszeiträume abdecken; positive Labels sollten unabhängig geprüft werden. Eine angereicherte Wazuh-Regelbasis wäre als eigener Versuchsarm gegen unveränderte Standardregeln, Punktemodell und statistische Vergleichsbasis zu messen.
+
+AST- und Datenflussmerkmale sowie Prozess-, Benutzer- und Netzwerkkontext könnten Fehlentscheidungen reduzieren. Zusätzlich kann der direkte Event-4104-Eingang zu einem eigenständigen Windows-Dienst weiterentwickelt werden. Dieser Dienst könnte den Kanal fortlaufend abonnieren, lokale Ergebnisse speichern und sie später an ein Überwachungs- oder Benachrichtigungssystem weitergeben. Weitere Messungen sollten PowerShell 7, mehrere Windows-Hosts und andere Wazuh-Versionen einbeziehen.
+
+%--------------------------------------------------------------------
+% Literaturverzeichnis
+%--------------------------------------------------------------------
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+\begin{thebibliography}{99}
+
+\bibitem{microsoft-logging-windows}
+Microsoft. \emph{about\_Logging\_Windows}. Microsoft Learn, aktualisiert am 18.01.2026. Online verfügbar: \url{https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_logging_windows?view=powershell-7.6}; abgerufen am 17.07.2026.
+
+\bibitem{microsoft-logging}
+Microsoft. \emph{about\_Logging}. Microsoft Learn, aktualisiert am 29.09.2025. Online verfügbar: \url{https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_logging?view=powershell-5.1}; abgerufen am 17.07.2026.
+
+\bibitem{wazuh-log-collection}
+Wazuh Inc. \emph{Configuring log collection for different operating systems}. Wazuh Documentation. Online verfügbar: \url{https://documentation.wazuh.com/current/user-manual/capabilities/log-data-collection/configuration.html}; abgerufen am 17.07.2026.
+
+\bibitem{wazuh-rules}
+Wazuh Inc. \emph{Rules Syntax -- Ruleset XML syntax}. Wazuh Documentation. Online verfügbar: \url{https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax/rules.html}; abgerufen am 17.07.2026.
+
+\bibitem{mitre-powershell}
+MITRE. \emph{Command and Scripting Interpreter: PowerShell, Technique T1059.001}. MITRE ATT\&CK. Online verfügbar: \url{https://attack.mitre.org/techniques/T1059/001/}; abgerufen am 17.07.2026.
+
+\bibitem{nist-idps}
+Scarfone, Karen; Mell, Peter. \emph{Guide to Intrusion Detection and Prevention Systems (IDPS)}. NIST Special Publication 800-94, 2007. Online verfügbar: \url{https://csrc.nist.gov/pubs/sp/800/94/final}; abgerufen am 17.07.2026.
+
+\bibitem{shannon1948}
+Shannon, Claude E. \emph{A Mathematical Theory of Communication}. The Bell System Technical Journal, Bd. 27, 1948, S. 379--423 und 623--656. DOI: \url{https://doi.org/10.1002/j.1538-7305.1948.tb01338.x}.
+
+\bibitem{salton1988}
+Salton, Gerard; Buckley, Christopher. \emph{Term-weighting approaches in automatic text retrieval}. Information Processing \& Management, Bd. 24, Nr. 5, 1988, S. 513--523. DOI: \url{https://doi.org/10.1016/0306-4573(88)90021-0}.
+
+\bibitem{atomic-red-team}
+Red Canary. \emph{Atomic Red Team: T1059.001 PowerShell}. Commit \path{94153597065a5cb453168ae177f48c9d30e89edb}. Online verfügbar: \url{https://github.com/redcanaryco/atomic-red-team/blob/94153597065a5cb453168ae177f48c9d30e89edb/atomics/T1059.001/T1059.001.md}; abgerufen am 11.07.2026.
+
+\bibitem{sigmahq-powershell}
+SigmaHQ. \emph{Sigma rules for Windows PowerShell}. Commit \path{282369fa76c5cd6103b055478fbaebec8530cfa5}. Online verfügbar: \url{https://github.com/SigmaHQ/sigma/tree/282369fa76c5cd6103b055478fbaebec8530cfa5/rules/windows/powershell}; abgerufen am 11.07.2026.
+
+\bibitem{lolbas}
+LOLBAS Project. \emph{Living Off The Land Binaries, Scripts and Libraries}. Repository-Stand \texttt{a2784c79091cb282fefb68f0056a853cfafd7e3c}. Online verfügbar: \url{https://github.com/LOLBAS-Project/LOLBAS/tree/a2784c79091cb282fefb68f0056a853cfafd7e3c}; abgerufen am 11.07.2026.
+
+\bibitem{invoke-obfuscation}
+Bohannon, Daniel. \emph{Invoke-Obfuscation}. Commit \path{f20e7f843edd0a3a7716736e9eddfa423395dd26}. Online verfügbar: \url{https://github.com/danielbohannon/Invoke-Obfuscation/tree/f20e7f843edd0a3a7716736e9eddfa423395dd26}; abgerufen am 11.07.2026.
+
+\bibitem{hendler2018}
+Hendler, Danny; Kels, Shay; Rubin, Amir. \emph{Detecting Malicious PowerShell Commands Using Deep Neural Networks}. Proceedings of the 2018 ACM Asia Conference on Computer and Communications Security, 2018, S. 187--197. DOI: \url{https://doi.org/10.1145/3196494.3196511}.
+
+\bibitem{rusak2018}
+Rusak, Gili; Al-Dujaili, Abdullah; O'Reilly, Una-May. \emph{AST-Based Deep Learning for Detecting Malicious PowerShell}. Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security, 2018. DOI: \url{https://doi.org/10.1145/3243734.3278496}.
+
+\bibitem{rubin2020}
+Rubin, Amir; Kels, Shay; Hendler, Danny. \emph{AMSI-Based Detection of Malicious PowerShell Code Using Contextual Embeddings}. Proceedings of the 15th ACM Asia Conference on Computer and Communications Security, 2020. DOI: \url{https://doi.org/10.1145/3320269.3384742}.
+
+\bibitem{hung2024}
+Hung, Hsiang-Hua; Chen, Jiann-Liang; Ma, Yi-Wei. \emph{Machine Learning Approaches to Malicious PowerShell Scripts Detection and Feature Combination Analysis}. Journal of Internet Technology, Bd. 25, Nr. 1, 2024, S. 167--173. DOI: \url{https://doi.org/10.53106/160792642024012501014}.
+
+\bibitem{wu2024mpsd}
+Wu, Min-Hao; Hsu, Fu-Hau; Hunag, Jian-Hong; Wang, Keyuan; Liu, Yen-Yu; Chen, Jian-Xin; Wang, Hao-Jyun; Yang, Hao-Tsung. \emph{MPSD: A Robust Defense Mechanism against Malicious PowerShell Scripts in Windows Systems}. Electronics, Bd. 13, Nr. 18, 2024, Art. 3717. DOI: \url{https://doi.org/10.3390/electronics13183717}.
+
+\bibitem{liu2018}
+Liu, Chao; Xia, Bin; Yu, Min; Liu, Yunzheng. \emph{PSDEM: A Feasible De-Obfuscation Method for Malicious PowerShell Detection}. 2018 IEEE Symposium on Computers and Communications, 2018, S. 825--831. DOI: \url{https://doi.org/10.1109/ISCC.2018.8538691}.
+
+\bibitem{ugarte2019}
+Ugarte, Denis; Maiorca, Davide; Cara, Fabrizio; Giacinto, Giorgio. \emph{PowerDrive: Accurate De-Obfuscation and Analysis of PowerShell Malware}. Detection of Intrusions and Malware, and Vulnerability Assessment, Lecture Notes in Computer Science, 2019, S. 240--259. DOI: \url{https://doi.org/10.1007/978-3-030-22038-9_12}.
+
+\bibitem{li2019}
+Li, Zhenyuan; Chen, Qi Alfred; Xiong, Chunlin; Chen, Yan; Zhu, Tiantian; Yang, Hai. \emph{Effective and Light-Weight Deobfuscation and Semantic-Aware Attack Detection for PowerShell Scripts}. Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security, 2019, S. 1831--1847. DOI: \url{https://doi.org/10.1145/3319535.3363187}.
+
+\bibitem{li2024powerpeeler}
+Li, Ruijie; Zhang, Chenyang; Chai, Huajun; Ying, Lingyun; Duan, Haixin; Tao, Jun. \emph{PowerPeeler: A Precise and General Dynamic Deobfuscation Method for PowerShell Scripts}. Proceedings of the 2024 ACM SIGSAC Conference on Computer and Communications Security, 2024. DOI: \url{https://doi.org/10.1145/3658644.3670310}.
+
+\bibitem{rfc2606}
+Eastlake, Donald E.; Panitz, Aliza R. \emph{Reserved Top Level DNS Names}. RFC 2606, Internet Engineering Task Force, 1999. DOI: \url{https://doi.org/10.17487/RFC2606}.
+
+\bibitem{rfc5737}
+Arkko, Jari; Cotton, Michelle; Vegoda, Leo. \emph{IPv4 Address Blocks Reserved for Documentation}. RFC 5737, Internet Engineering Task Force, 2010. DOI: \url{https://doi.org/10.17487/RFC5737}.
+
+\bibitem{kohavi1995}
+Kohavi, Ron. \emph{A Study of Cross-Validation and Bootstrap for Accuracy Estimation and Model Selection}. Proceedings of the 14th International Joint Conference on Artificial Intelligence, 1995, S. 1137--1145. Online verfügbar: \url{https://www.ijcai.org/Proceedings/95-2/Papers/016.pdf}; abgerufen am 17.07.2026.
+
+\bibitem{efron1979}
+Efron, Bradley. \emph{Bootstrap Methods: Another Look at the Jackknife}. The Annals of Statistics, Bd. 7, Nr. 1, 1979, S. 1--26. DOI: \url{https://doi.org/10.1214/aos/1176344552}.
+
+\bibitem{saito2015}
+Saito, Takaya; Rehmsmeier, Marc. \emph{The Precision-Recall Plot Is More Informative than the ROC Plot When Evaluating Binary Classifiers on Imbalanced Datasets}. PLOS ONE, Bd. 10, Nr. 3, 2015, e0118432. DOI: \url{https://doi.org/10.1371/journal.pone.0118432}.
+
+\end{thebibliography}
+
+%--------------------------------------------------------------------
+% Anhang
+%--------------------------------------------------------------------
+\appendix
+
+\chapter{Datensatzstruktur}
+\label{app:dataset}
+Der Datensatz ist eine UTF-8-kodierte JSON-Liste. Codeblock~\ref{lst:dataset-schema} zeigt zentrale Felder in gekürzter Form. \texttt{analysis\_text} dient als Referenz für Validierung und Dokumentation. Die berichteten lexikalischen Entscheidungen verwenden dagegen den zugeordneten, direkt aus Event-ID 4104 erfassten \texttt{ScriptBlockText}. Ergebnisfelder werden getrennt erzeugt.
+
+\begin{lstlisting}[language={},caption={Vereinfachte Datensatzstruktur},label={lst:dataset-schema}]
+{
+  "schema_version": 5,
+  "id": "PST-002",
+  "label": "benign",
+  "class_id": 0,
+  "dataset_group": "hard_benign",
+  "scenario": "hard_environment_expansion_v1",
+  "behavior_family": "hard_environment_expansion",
+  "evaluation_group": "benign:hard_environment_expansion",
+  "mitre_attack_id": "N/A",
+  "obfuscation_type": "none",
+  "analysis_text": "$template = 'backup_path=...'; ...",
+  "scriptblock": "$sampleId='PST-002'; ... WAZUH_SAMPLE {0} ...",
+  "safety_class": "benign_safe_execution",
+  "source_snapshot_ids": ["microsoft_powershell"]
+}
+\end{lstlisting}
+\chapter{Reproduzierbarkeit und Artefakte}
+\label{app:reproducibility}
+Die Prüfsummen in Tabelle~\ref{tab:artifact-hashes} beziehen sich auf die Dateien, aus denen die berichteten Werte erzeugt wurden. \path{capture_start.json}, \path{capture_summary.json}, \path{run_summary.json} und \path{manager_receipt_summary.json} dokumentieren Eingabepfade, Zeilenstände, Parameter und Zählwerte. Die ausführbaren Befehle stehen zusätzlich in \path{BUILD.md}.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{|L{3.5cm}|L{4.0cm}|L{5.4cm}|}
+\caption[Prüfsummen der zentralen Versuchsartefakte]{Prüfsummen der zentralen Versuchsartefakte}\label{tab:artifact-hashes}\\
+\hline
+\textbf{Artefakt} & \textbf{Zweck} & \textbf{SHA-256}\\
+\hline
+\endfirsthead
+\multicolumn{3}{c}{\small Fortsetzung von Tabelle~\thetable}\\
+\hline
+\textbf{Artefakt} & \textbf{Zweck} & \textbf{SHA-256}\\
+\hline
+\endhead
+\multicolumn{3}{r}{\small Fortsetzung auf der nächsten Seite}\\
+\endfoot
+\endlastfoot
+Datensatz & 300 gelabelte ScriptBlocks. & \path{12F6AA415BB8FE96B50F854C8590E98769ECE2C2CBD3775118294E32B58C4AE3}\\
+\hline
+Quellenmanifest & Quellen und Repository-Stände. & \path{B311EF8B9DB1574A991667D17ED77E111738854B1E8AE1FE67AF446AAA9B0706}\\
+\hline
+\texttt{pipeline.py} & Punktemodell, Alarmimport, Kreuzvalidierung und Metriken. & \path{A4611EA73A7B63BD90C2D1068E0CD267F377F38D7CF9B3EC5707A418A3461646}\\
+\hline
+Kernpipeline-Tests & Vierzehn automatisierte Prüfungen. & \path{555EE3482B893B5207683171ABFB0DE587568D6E3816D67A90AE297591D8756B}\\
+\hline
+\codebreak{additional\_}{analyses.py} & Statistische Vergleichsbasis und Diagramm. & \path{0D3B8284308ED245A94C7B26B041E55989C2626A0B5508C67ABC5D9C62FB2513}\\
+\hline
+Zusatztests & Drei Prüfungen der statistischen Auswertung. & \path{3699406865C98121A463DF8BCD13669ECA22385619FDDBB0CB9F714FB9946600}\\
+\hline
+\codebreak{capture\_wazuh\_}{offsets.py} & Startpositionen von Archiv und Alarmprotokoll. & \path{9802FAA118C06C06929020B78BE8D46F5ED233DD2847BC58B0543354A65D0BA7}\\
+\hline
+\codebreak{export\_wazuh\_}{capture.py} & Getrennter Export von Empfangsbelegen und Regelalarmen. & \path{834F4E5422A05D6A4263453D8624825A331DA4F86A6944D19EF33EC88EB0C3A5}\\
+\hline
+Wazuh-Exporttests & Drei Prüfungen von Offset, Filterung und ID-Eindeutigkeit. & \path{60AB4BF2A01DE61162AE454ECC79F49A824C2D62CFFB4D3370156F04BD2E6A86}\\
+\hline
+\codebreak{benchmark\_}{pipeline.py} & Abgegrenzte Laufzeitmessung. & \path{2929AD3151FFD6C150BEA9C42B6AB606C8883BAAE500AF9C6E414BBBC08CF8FC}\\
+\hline
+PowerShell-Ausführungsskript & AST-Prüfung und kontrollierte Ausführung. & \path{59BBEA02C3B912174EDC389A535789477E908578A21326F993922319EFABDE62}\\
+\hline
+Lokaler Event-Erfasser & Fortlaufender Export von Event-ID 4104. & \path{3DA30EA9979896689C047B956FF6B9158B13F896F98954D3C46CDA1E5BFC679C}\\
+\hline
+Manager-Prüfprogramm & Prüfung aller managerseitigen Empfangsbelege. & \path{A255F3CC840688A39296BDD9535A6FF4A2E3105C5B26D121DD6ED99B55BF5346}\\
+\hline
+Lokaler Event-Export & 300 direkt erfasste Ereignistexte. & \path{127ADF5AED259214836D8270D809A45A64A46AC05F988116C58E07EE8ABB4A90}\\
+\hline
+Manager-Empfangsbelege & 300 weitergeleitete Event-4104-Ereignisse. & \path{6D12576F4EB711189989025C1C6AB4E25DCB307579F40B334B468583F35A2F62}\\
+\hline
+Wazuh-Alarmexport & 88 Alarmmeldungen der Standardregeln. & \path{B155CD316B3F0324DAD612CAFBDD1155068DF859594E01BB8EAAD5784EA3AFE2}\\
+\hline
+Ausführungslog & Status und Zeitstempel der 300 Testfälle. & \path{CD3EA5CCE929CFE9CF19FFFA4286CC79EC4CC110AEC35B5B517BA5D142D4F9CF}\\
+\hline
+Wazuh-Gesamtmetriken & Kennzahlen von Wazuh, Punktemodell und Verknüpfungen. & \path{9AB55306746043F4CF016C7CC95563B2E7162D8D553C13D42E8F7FC37A036E88}\\
+\hline
+Statistische Metriken & Gesamtwerte der Zeichen-\(n\)-Gramm-Vergleichsbasis. & \path{2C50FD65354E3509D9BC4FD50F5BBC3C85787E0AC82BFE5720D5EEF90F4CF370}\\
+\hline
+Laufzeitwerte & Messreihen mit 300, 1.500 und 3.000 Auswertungen. & \path{1B65A9DAB99A6F1811B8B275CC5A7B6548D98411C662464DC8E88636C15CCA94}\\
+\hline
+Wazuh-Regeldatei & Installierte PowerShell-Standardregeln. & \path{B358B3C4DD597FDE075E7749401FEFF78728431F9E24C77A3C01399CAC10739F}\\
+\hline
+\end{longtable}
+\endgroup
+
+\clearpage\chapter*{Dokumentation der verwendeten Hilfsmittel}
+\addcontentsline{toc}{chapter}{Dokumentation der verwendeten Hilfsmittel}
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.10}
+\begin{longtable}{|L{3.3cm}|L{4.8cm}|L{4.5cm}|}
+\hline
+\textbf{Hilfsmittel} & \textbf{Verwendungszweck} & \textbf{Umfang und Kontrolle}\\
+\hline
+LaTeX & Satz, Tabellen, Abbildungsverweise, Verzeichnisse und Literaturverzeichnis. & Der Quelltext wurde manuell geprüft und kompiliert.\\
+\hline
+Wazuh, PowerShell und Windows Event Viewer & Aufbau der Laborumgebung, Erfassung von ScriptBlock-Logs und Export der Wazuh-Alarmmeldungen. & Die Ergebnisse stammen aus dem beschriebenen Laborlauf und wurden über die Pipeline ausgewertet.\\
+\hline
+Python, NumPy, SciPy und Matplotlib & Datenaufbereitung, Merkmalsextraktion, statistische Vergleichsbasis, Metrik- und Laufzeitberechnung sowie Ergebnisdiagramme. & Berechnete Werte und Diagrammdaten wurden mit den exportierten CSV-Dateien abgeglichen.\\
+\hline
+Offizielle Dokumentationen und Fachquellen & Technische Einordnung von ScriptBlock-Logging, Wazuh, MITRE ATT\&CK und Evaluierungsmetriken. & Quellen sind im Literaturverzeichnis angegeben und wurden inhaltlich geprüft.\\
+\hline
+Git und GitHub & Versionierung und Bereitstellung der projektbezogenen Quell- und Ergebnisartefakte. & Veröffentlichte Dateien wurden vor der Verlinkung geprüft.\\
+\hline
+KI-gestütztes Sprachmodell (OpenAI ChatGPT/Codex) & Unterstützung bei Struktur- und Sprachprüfung, LaTeX-Satz, Programmierung und Fehlersuche, Testentwurf, statistischer Auswertung sowie Diagrammerzeugung. & Sämtliche Vorschläge, Quelltexte, Berechnungen und Aussagen wurden durch den Verfasser anhand der Primärquellen und erzeugten Artefakte geprüft; das System wurde nicht als wissenschaftliche Quelle verwendet.\\
+\hline
+\end{longtable}
+\endgroup
+
+\clearpage
+\chapter*{Quellcode und GitHub-Repository}
+\addcontentsline{toc}{chapter}{Quellcode und GitHub-Repository}
+
+Der Quellcode der entwickelten Auswertungspipeline, die LaTeX-Artefakte und die projektbezogenen Dateien sind im folgenden GitHub-Repository verfügbar:
+
+\vspace{1cm}
+
+\begin{center}
+\large
+\url{https://github.com/4fv7/thesis}
+\end{center}
+
+\end{document}

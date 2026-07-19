@@ -1,0 +1,5 @@
+method,group_field,group_value,sample_count,positive_count,negative_count,precision,recall,f1,fpr,specificity,accuracy,balanced_accuracy,TP,FP,TN,FN
+wazuh_standard,all,all,300,150,150,0.613636,0.36,0.453782,0.226667,0.773333,0.566667,0.566667,54,34,116,96
+lexical_pipeline,all,all,300,150,150,0.875969,0.753333,0.810036,0.106667,0.893333,0.823333,0.823333,113,16,134,37
+hybrid_or,all,all,300,150,150,0.751479,0.846667,0.796238,0.28,0.72,0.783333,0.783333,127,42,108,23
+hybrid_and,all,all,300,150,150,0.833333,0.266667,0.40404,0.053333,0.946667,0.606667,0.606667,40,8,142,110

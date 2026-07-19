@@ -1,0 +1,17 @@
+method,group_field,group_value,sample_count,positive_count,negative_count,precision,recall,f1,fpr,specificity,accuracy,balanced_accuracy,TP,FP,TN,FN
+wazuh_standard,dataset_group,clear_indicator,30,30,0,1.0,0.433333,0.604651,,,0.433333,,13,0,0,17
+lexical_pipeline,dataset_group,clear_indicator,30,30,0,1.0,0.4,0.571429,,,0.4,,12,0,0,18
+hybrid_or,dataset_group,clear_indicator,30,30,0,1.0,0.666667,0.8,,,0.666667,,20,0,0,10
+hybrid_and,dataset_group,clear_indicator,30,30,0,1.0,0.166667,0.285714,,,0.166667,,5,0,0,25
+wazuh_standard,dataset_group,hard_benign,50,0,50,0.0,,,0.2,0.8,0.8,,0,10,40,0
+lexical_pipeline,dataset_group,hard_benign,50,0,50,0.0,,,0.28,0.72,0.72,,0,14,36,0
+hybrid_or,dataset_group,hard_benign,50,0,50,0.0,,,0.32,0.68,0.68,,0,16,34,0
+hybrid_and,dataset_group,hard_benign,50,0,50,0.0,,,0.16,0.84,0.84,,0,8,42,0
+wazuh_standard,dataset_group,normal_benign,100,0,100,0.0,,,0.24,0.76,0.76,,0,24,76,0
+lexical_pipeline,dataset_group,normal_benign,100,0,100,0.0,,,0.02,0.98,0.98,,0,2,98,0
+hybrid_or,dataset_group,normal_benign,100,0,100,0.0,,,0.26,0.74,0.74,,0,26,74,0
+hybrid_and,dataset_group,normal_benign,100,0,100,,,,0.0,1.0,1.0,,0,0,100,0
+wazuh_standard,dataset_group,obfuscated_indicator,120,120,0,1.0,0.341667,0.509317,,,0.341667,,41,0,0,79
+lexical_pipeline,dataset_group,obfuscated_indicator,120,120,0,1.0,0.841667,0.914027,,,0.841667,,101,0,0,19
+hybrid_or,dataset_group,obfuscated_indicator,120,120,0,1.0,0.891667,0.942731,,,0.891667,,107,0,0,13
+hybrid_and,dataset_group,obfuscated_indicator,120,120,0,1.0,0.291667,0.451613,,,0.291667,,35,0,0,85

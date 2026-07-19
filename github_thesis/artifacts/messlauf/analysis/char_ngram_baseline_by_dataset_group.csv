@@ -1,0 +1,5 @@
+method,group_field,group_value,sample_count,positive_count,negative_count,precision,recall,f1,fpr,specificity,accuracy,TP,FP,TN,FN
+char_ngram_tfidf_logistic_regression,dataset_group,clear_indicator,30,30,0,1.0,0.766667,0.867925,0.0,0.0,0.766667,23,0,0,7
+char_ngram_tfidf_logistic_regression,dataset_group,hard_benign,50,0,50,0.0,0.0,0.0,0.18,0.82,0.82,0,9,41,0
+char_ngram_tfidf_logistic_regression,dataset_group,normal_benign,100,0,100,0.0,0.0,0.0,0.05,0.95,0.95,0,5,95,0
+char_ngram_tfidf_logistic_regression,dataset_group,obfuscated_indicator,120,120,0,1.0,0.933333,0.965517,0.0,0.0,0.933333,112,0,0,8
