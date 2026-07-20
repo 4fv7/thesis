@@ -215,4 +215,4 @@ pdflatex -file-line-error -interaction=nonstopmode -halt-on-error \
   Bachelorarbeit_Rashed_Alsuhaibi.tex
 ~~~
 
-Die erzeugte Datei heißt <code>Bachelorarbeit_Rashed_Alsuhaibi.pdf</code>. Danach werden Warnungen, Abbildungsverweise, Tabellenränder, Seitenzahlen und Lesbarkeit der Screenshots geprüft.
+Die erzeugte Datei heißt <code>Bachelorarbeit.pdf</code>. Danach werden Warnungen, Abbildungsverweise, Tabellenränder, Seitenzahlen und Lesbarkeit der Screenshots geprüft.
