@@ -1,0 +1,8 @@
+method,group_field,group_value,sample_count,positive_count,negative_count,precision,recall,f1,fpr,specificity,accuracy,TP,FP,TN,FN
+char_ngram_tfidf_logistic_regression,obfuscation_type,alias_command_reconstruction,20,20,0,1.0,1.0,1.0,0.0,0.0,1.0,20,0,0,0
+char_ngram_tfidf_logistic_regression,obfuscation_type,backtick_literal,20,20,0,1.0,0.75,0.857143,0.0,0.0,0.75,15,0,0,5
+char_ngram_tfidf_logistic_regression,obfuscation_type,base64_literal_decode_safe,20,20,0,1.0,1.0,1.0,0.0,0.0,1.0,20,0,0,0
+char_ngram_tfidf_logistic_regression,obfuscation_type,combined_obfuscation,20,20,0,1.0,1.0,1.0,0.0,0.0,1.0,20,0,0,0
+char_ngram_tfidf_logistic_regression,obfuscation_type,mixed_case,20,20,0,1.0,0.85,0.918919,0.0,0.0,0.85,17,0,0,3
+char_ngram_tfidf_logistic_regression,obfuscation_type,none,30,30,0,1.0,0.766667,0.867925,0.0,0.0,0.766667,23,0,0,7
+char_ngram_tfidf_logistic_regression,obfuscation_type,string_concatenation,20,20,0,1.0,1.0,1.0,0.0,0.0,1.0,20,0,0,0

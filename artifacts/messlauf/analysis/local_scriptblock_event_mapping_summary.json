@@ -1,0 +1,12 @@
+{
+  "source_field": "Windows Event 4104/EventData/ScriptBlockText",
+  "raw_event_count": 300,
+  "mapped_sample_count": 300,
+  "status_counts": {
+    "mapped": 300
+  },
+  "exact_dataset_scriptblock_match_count": 300,
+  "non_exact_dataset_scriptblock_ids": [],
+  "missing_sample_ids": [],
+  "duplicate_sample_ids": []
+}

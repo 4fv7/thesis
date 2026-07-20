@@ -1,0 +1,84 @@
+{
+  "method": "character 3-5 gram TF-IDF with L2 logistic regression",
+  "input": "directly captured and de-instrumented Event ID 4104 ScriptBlockText",
+  "fold_source": "same grouped five-fold assignment as the lexical point model",
+  "decision_threshold": 0.5,
+  "scaffold_normalization": "case folding, variable-name normalization, removal of variable assignments and trailing Write-Output variable wrappers",
+  "min_ngram": 3,
+  "max_ngram": 5,
+  "min_document_frequency": 2,
+  "max_features": 15000,
+  "l2_regularization": 1.0,
+  "numpy_version": "2.3.5",
+  "scipy_version": "1.16.3",
+  "overall_metrics": {
+    "method": "char_ngram_tfidf_logistic_regression",
+    "group_field": "all",
+    "group_value": "all",
+    "sample_count": 300,
+    "positive_count": 150,
+    "negative_count": 150,
+    "precision": 0.90604,
+    "recall": 0.9,
+    "f1": 0.90301,
+    "fpr": 0.093333,
+    "specificity": 0.906667,
+    "accuracy": 0.903333,
+    "TP": 135,
+    "FP": 14,
+    "TN": 136,
+    "FN": 15
+  },
+  "fold_diagnostics": [
+    {
+      "fold": 0,
+      "training_sample_count": 240,
+      "test_sample_count": 60,
+      "vocabulary_size": 13038,
+      "converged": true,
+      "iterations": 20,
+      "final_objective": 90.76707855422495,
+      "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    },
+    {
+      "fold": 1,
+      "training_sample_count": 240,
+      "test_sample_count": 60,
+      "vocabulary_size": 13411,
+      "converged": true,
+      "iterations": 20,
+      "final_objective": 86.45328493304629,
+      "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    },
+    {
+      "fold": 2,
+      "training_sample_count": 240,
+      "test_sample_count": 60,
+      "vocabulary_size": 13051,
+      "converged": true,
+      "iterations": 19,
+      "final_objective": 88.6944808858765,
+      "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    },
+    {
+      "fold": 3,
+      "training_sample_count": 240,
+      "test_sample_count": 60,
+      "vocabulary_size": 13528,
+      "converged": true,
+      "iterations": 19,
+      "final_objective": 88.41670346650612,
+      "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    },
+    {
+      "fold": 4,
+      "training_sample_count": 240,
+      "test_sample_count": 60,
+      "vocabulary_size": 13124,
+      "converged": true,
+      "iterations": 20,
+      "final_objective": 90.99857560433597,
+      "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "valid": true,
+  "purpose": "manager-side transport and ingestion receipt verification only",
+  "used_as_lexical_input": false,
+  "dataset_sha256": "12f6aa415bb8fe96b50f854c8590e98769ece2c2cbd3775118294e32b58c4ae3",
+  "receipt_export_sha256": "6d12576f4eb711189989025c1c6ab4e25dcb307579f40b334b468583f35a2f62",
+  "raw_record_count": 300,
+  "accepted_record_count": 300,
+  "unique_expected_sample_count": 300,
+  "unique_received_sample_count": 300,
+  "missing_sample_ids": [],
+  "duplicate_sample_ids": [],
+  "rejected_records": [],
+  "event_id_counts": {
+    "4104": 300
+  },
+  "agent_name_counts": {
+    "Windows-Host": 300
+  },
+  "first_timestamp": "2026-07-17T11:35:24.346+0200",
+  "last_timestamp": "2026-07-17T11:37:53.336+0200"
+}

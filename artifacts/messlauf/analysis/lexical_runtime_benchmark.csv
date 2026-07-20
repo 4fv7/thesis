@@ -1,0 +1,4 @@
+operation_count,wall_seconds,cpu_seconds,throughput_events_per_second,mean_latency_ms,median_latency_ms,p95_latency_ms,p99_latency_ms,peak_python_memory_mib,score_checksum
+300,0.499035,0.499053,601.16,1.661,1.5908,2.3498,2.5117,0.091,2240
+1500,2.588208,2.588161,579.55,1.7229,1.6413,2.4024,2.7794,0.128,11200
+3000,5.249325,5.249103,571.5,1.7473,1.6666,2.4789,2.9405,0.175,22400

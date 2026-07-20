@@ -1,0 +1,30 @@
+{
+  "exported_at_utc": "2026-07-17T09:39:42.418991+00:00",
+  "capture_start": {
+    "captured_at_utc": "2026-07-17T09:34:10.644650+00:00",
+    "alerts_path": "/var/ossec/logs/alerts/alerts.json",
+    "alerts_start_line": 129,
+    "ossec_conf_sha256": "1b5e78c987c32b79a9eba5846fcfb8a751f0cc973a15fa2633c67399de8f3ef9",
+    "powershell_rules_sha256": "b358b3c4dd597fde075e7749401feff78728431f9e24c77a3c01399cac10739f"
+  },
+  "expected_sample_count": 300,
+  "standard_alert_record_count": 88,
+  "standard_alert_unique_sample_count": 88,
+  "unalerted_sample_count": 212,
+  "rejected_records": [],
+  "standard_rule_counts": {
+    "91803": 2,
+    "91809": 26,
+    "91815": 12,
+    "91816": 25,
+    "91819": 4,
+    "91820": 4,
+    "91822": 1,
+    "91823": 2,
+    "91824": 1,
+    "91837": 9,
+    "91844": 2
+  },
+  "alerts_sha256": "b155cd316b3f0324dad612cafbdd1155068df859594e01bb8eaad5784ea3afe2",
+  "dataset_sha256": "12f6aa415bb8fe96b50f854c8590e98769ece2c2cbd3775118294e32b58c4ae3"
+}

@@ -1,0 +1,6 @@
+fold,selected_threshold,training_sample_count,test_sample_count,training_f1,training_fpr,training_recall
+0,4,240,60,0.796296,0.083333,0.716667
+1,5,240,60,0.811321,0.05,0.716667
+2,3,240,60,0.886076,0.1,0.875
+3,4,240,60,0.810811,0.1,0.75
+4,6,240,60,0.843602,0.016667,0.741667

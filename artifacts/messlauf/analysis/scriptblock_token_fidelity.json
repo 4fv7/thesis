@@ -1,0 +1,37 @@
+﻿{
+    "checked_at_utc":  "2026-07-17T09:49:03.1100360Z",
+    "dataset_path":  "Microsoft.PowerShell.Core\\FileSystem::\\\\wsl.localhost\\kali-linux\\home\\rashed\\OffSecRepo\\ctf_llm_inject\\output\\Bachelorarbeit_Rashed_Alsuhaibi\\artifacts\\dataset\\powershell_scriptblock_samples.json",
+    "mapped_events_csv_path":  "Microsoft.PowerShell.Core\\FileSystem::\\\\wsl.localhost\\kali-linux\\home\\rashed\\OffSecRepo\\ctf_llm_inject\\output\\Bachelorarbeit_Rashed_Alsuhaibi\\artifacts\\messlauf\\analysis\\scriptblock_events_mapped.csv",
+    "sample_count":  300,
+    "status_counts":  {
+                          "exact":  298,
+                          "token_equivalent_line_continuation_rendering":  2
+                      },
+    "token_equivalent_line_continuation_ids":  [
+                                                   "PST-033",
+                                                   "PST-090"
+                                               ],
+    "failure_ids":  [
+
+                    ],
+    "records":  [
+                    {
+                        "sample_id":  "PST-033",
+                        "status":  "token_equivalent_line_continuation_rendering",
+                        "expected_parse_errors":  0,
+                        "observed_parse_errors":  0,
+                        "expected_statement_count":  3,
+                        "observed_statement_count":  3,
+                        "token_sequences_equal":  true
+                    },
+                    {
+                        "sample_id":  "PST-090",
+                        "status":  "token_equivalent_line_continuation_rendering",
+                        "expected_parse_errors":  0,
+                        "observed_parse_errors":  0,
+                        "expected_statement_count":  4,
+                        "observed_statement_count":  4,
+                        "token_sequences_equal":  true
+                    }
+                ]
+}

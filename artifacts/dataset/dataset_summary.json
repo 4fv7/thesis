@@ -1,0 +1,32 @@
+{
+  "schema_version": 5,
+  "seed": 20260711,
+  "sample_count": 300,
+  "label_counts": {
+    "simulated_malicious": 150,
+    "benign": 150
+  },
+  "dataset_group_counts": {
+    "obfuscated_indicator": 120,
+    "hard_benign": 50,
+    "normal_benign": 100,
+    "clear_indicator": 30
+  },
+  "obfuscation_counts": {
+    "alias_command_reconstruction": 20,
+    "none": 180,
+    "combined_obfuscation": 20,
+    "backtick_literal": 20,
+    "string_concatenation": 20,
+    "base64_literal_decode_safe": 20,
+    "mixed_case": 20
+  },
+  "evaluation_group_count": 105,
+  "unique_ids": 300,
+  "unique_scriptblocks": 300,
+  "unique_analysis_texts": 300,
+  "unique_casefolded_analysis_texts": 280,
+  "errors": [],
+  "dataset_sha256": "12f6aa415bb8fe96b50f854c8590e98769ece2c2cbd3775118294e32b58c4ae3",
+  "source_manifest_sha256": "b311ef8b9db1574a991667d17ed77e111738854b1e8ae1fe67af446aaa9b0706"
+}

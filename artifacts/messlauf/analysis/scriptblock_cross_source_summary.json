@@ -1,0 +1,15 @@
+{
+  "comparison": "Wazuh archive ScriptBlockText versus local Windows Event 4104 ScriptBlockText",
+  "status_counts": {
+    "backtick_line_continuation_rendering": 2,
+    "exact": 298
+  },
+  "line_ending_only_ids": [],
+  "backtick_line_continuation_rendering_ids": [
+    "PST-033",
+    "PST-090"
+  ],
+  "rejected_drift_ids": [],
+  "missing_local_ids": [],
+  "missing_wazuh_ids": []
+}

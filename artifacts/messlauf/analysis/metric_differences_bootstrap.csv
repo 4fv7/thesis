@@ -1,0 +1,7 @@
+left_method,right_method,metric,estimate_difference,ci_lower_95,ci_upper_95,iterations
+lexical_pipeline,wazuh_standard,f1,0.356254,0.240027,0.486782,2000
+lexical_pipeline,wazuh_standard,recall,0.393333,0.26,0.52,2000
+lexical_pipeline,wazuh_standard,fpr,-0.12,-0.226667,-0.026333,2000
+hybrid_or,lexical_pipeline,f1,-0.013798,-0.061931,0.037902,2000
+hybrid_or,lexical_pipeline,recall,0.093334,0.04,0.153501,2000
+hybrid_or,lexical_pipeline,fpr,0.173333,0.093333,0.266666,2000
