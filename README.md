@@ -37,8 +37,8 @@ Diese Werte gelten nur für den beschriebenen, ausgeglichenen Labordatensatz. Si
 
 ~~~text
 .
-├── Bachelorarbeit_Rashed_Alsuhaibi.tex
-├── Bachelorarbeit_Rashed_Alsuhaibi.pdf
+├── Bachelorarbeit.tex
+├── Bachelorarbeit.pdf
 ├── artifacts/
 │   ├── dataset/          Datensatz, Quellenmanifest und Zusammenfassung
 │   ├── messlauf/         Event-4104-, Wazuh- und Ergebnisartefakte
@@ -94,7 +94,7 @@ Mit MiKTeX oder TeX Live:
 
 ~~~bash
 latexmk -pdf -file-line-error -interaction=nonstopmode \
-  -halt-on-error Bachelorarbeit_Rashed_Alsuhaibi.tex
+  -halt-on-error Bachelorarbeit.tex
 ~~~
 
 Alternativ kann <code>pdflatex</code> dreimal ausgeführt werden. Die Abbildungen liegen bereits in den benötigten relativen Pfaden.
