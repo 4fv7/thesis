@@ -1,6 +1,6 @@
 # Reproduktion und PDF-Kompilation
 
-Alle relativen Pfade beziehen sich auf das Wurzelverzeichnis dieses Repositorys. Die eingefrorenen Dateien unter <code>artifacts/messlauf/</code> dokumentieren den berichteten Messlauf vom 17.07.2026. Kontrollläufe sollen getrennte Ausgabeverzeichnisse verwenden.
+Alle relativen Pfade beziehen sich auf das Wurzelverzeichnis dieses Repositorys. Die eingefrorenen Dateien unter <code>artifacts/messlauf/</code> dokumentieren den letzten Messlauf. Kontrollläufe sollen getrennte Ausgabeverzeichnisse verwenden.
 
 Die simulierten positiven Testfälle dürfen ausschließlich in der beschriebenen Laborumgebung ausgeführt werden.
 
