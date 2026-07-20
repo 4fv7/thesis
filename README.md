@@ -23,8 +23,6 @@ Der Datensatz wurde im Rahmen der Arbeit erzeugt und geprüft:
 
 MITRE ATT&CK, Atomic Red Team, Sigma, LOLBAS, Wazuh und Invoke-Obfuscation dienen als fachliche Referenzen. Es wurden keine vollständigen C2-Implantate oder Nutzlastdateien aus diesen Quellen importiert. Positive Testfälle rekonstruieren oder dekodieren ausschließlich inerte Texte. Sie stellen keine tatsächlich ausgeführte Schadsoftware dar.
 
-Die ausführliche Herkunftsbeschreibung steht in [docs/DATASET_PROVENANCE.md](docs/DATASET_PROVENANCE.md).
-
 ## Zentrale Ergebnisse
 
 | Verfahren | Precision | Recall | F1-Score | FPR |
@@ -45,15 +43,10 @@ Diese Werte gelten nur für den beschriebenen, ausgeglichenen Labordatensatz. Si
 │   ├── dataset/          Datensatz, Quellenmanifest und Zusammenfassung
 │   ├── messlauf/         Event-4104-, Wazuh- und Ergebnisartefakte
 │   └── source/           Pipeline, Datensatzgenerator, Exporter und Tests
-├── docs/
-│   ├── AI_USAGE.md
-│   └── DATASET_PROVENANCE.md
 ├── figures/
 │   ├── screenshots/      Reale Nachweisaufnahmen der Laborumgebung
 │   └── *.pdf             Ergebnisdiagramme und geprüfte Methodendiagramme
 ├── scripts/              Zusatzanalyse, Laufzeitmessung, Abbildungen und Prüfung
-├── BUILD.md              Vollständiger Reproduktions- und Kompilationsablauf
-├── SCREENSHOT_GUIDE.md   Anleitung zum erneuten Erstellen der Screenshots
 └── requirements.txt      Festgeschriebene Python-Abhängigkeiten
 ~~~
 
@@ -93,8 +86,6 @@ python3 scripts/additional_analyses.py \
   --figure-output reproduced_figures/baseline_comparison.pdf
 ~~~
 
-Der vollständige Ablauf für einen neuen Laborlauf, die Wazuh-Exporte, die Laufzeitmessung, die Abbildungen und die PDF-Kompilation steht in [BUILD.md](BUILD.md).
-
 Die vier Methodendiagramme `lab_architecture.pdf`, `dataset_construction.pdf`, `experiment_flow.pdf` und `windows_event_channel_evidence.pdf` sind als geprüfte statische Vektorgrafiken versioniert. Das Abbildungsskript erzeugt ausschließlich die datenabhängigen Ergebnisdiagramme und überschreibt diese vier Dateien nicht.
 
 ## PDF erstellen
@@ -111,5 +102,3 @@ Alternativ kann <code>pdflatex</code> dreimal ausgeführt werden. Die Abbildunge
 ## Verantwortungsvolle Nutzung
 
 Die enthaltenen Testfälle sind für die dokumentierte, isolierte Laborumgebung vorgesehen. Das Repository enthält keine vollständigen realen C2-Nutzlasten. Eine Erweiterung mit realer Schadsoftware oder produktiven Protokolldaten gehört nicht zum reproduzierten Messlauf und erfordert eine eigene rechtliche, ethische und technische Prüfung.
-
-Die Nutzung von ChatGPT und DeepL im Arbeitsprozess ist in [docs/AI_USAGE.md](docs/AI_USAGE.md) und in der Hilfsmitteldokumentation der Arbeit offengelegt.
