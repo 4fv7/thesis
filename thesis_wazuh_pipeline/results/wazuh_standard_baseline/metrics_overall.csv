@@ -1,4 +1,0 @@
-FN,FP,TN,TP,accuracy,balanced_accuracy,f1,fpr,group_field,group_value,method,precision,recall,sample_count,specificity
-120,34,116,30,0.486667,0.486667,0.280374,0.226667,all,all,wazuh_standard,0.46875,0.2,300,0.773333
-31,13,137,119,0.853333,0.853333,0.843972,0.086667,all,all,lexical_pipeline,0.901515,0.793333,300,0.913333
-30,39,111,120,0.77,0.77,0.776699,0.26,all,all,hybrid_or,0.754717,0.8,300,0.74
